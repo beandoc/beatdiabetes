@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beat Diabetes — Complete Type 1 Diabetes Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ef;--surface:#fff;
+  --teal:#1a7a6e;--teal-l:#2aa898;--teal-p:#e0f4f2;
+  --coral:#e85d3a;--coral-p:#fdeee9;
+  --amber:#f5a623;--amber-p:#fef6e4;
+  --green:#3aab6b;--green-p:#e5f7ed;
+  --red:#d93030;--red-p:#fde8e8;
+  --purple:#7c5cbc;--purple-p:#f0ecfb;
+  --blue:#2563eb;--blue-p:#eff6ff;
+  --text:#1e2a28;--muted:#6b7c78;
+  --border:#e2ddd6;--shadow:0 4px 24px rgba(26,122,110,.10)
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(247,244,239,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 1.5rem;height:58px;display:flex;align-items:center;gap:.8rem}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--teal);display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;text-decoration:none}
+.nav-scroll{display:flex;gap:.15rem;list-style:none;overflow-x:auto;flex:1;padding:4px 0}
+.nav-scroll::-webkit-scrollbar{height:0}
+.nav-scroll a{text-decoration:none;color:var(--muted);font-size:.72rem;font-weight:500;padding:4px 9px;border-radius:8px;transition:all .18s;white-space:nowrap;display:block}
+.nav-scroll a:hover,.nav-scroll a.active{color:var(--teal);background:var(--teal-p);font-weight:600}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1a7a6e 0%,#0e4f47 55%,#162e2b 100%);color:#fff;padding:4rem 2rem 3rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;opacity:.4;background:radial-gradient(ellipse at 80% 20%,rgba(125,232,220,.18) 0%,transparent 60%)}
+.hero-inner{max-width:980px;margin:0 auto;position:relative}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);border-radius:100px;padding:4px 16px;font-size:.72rem;font-weight:600;margin-bottom:1.2rem;letter-spacing:.08em;text-transform:uppercase}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,3rem);font-weight:700;line-height:1.15;margin-bottom:.9rem}
+.hero h1 em{font-style:italic;color:#7de8dc}
+.hero-sub{font-size:.92rem;color:rgba(255,255,255,.75);max-width:600px;line-height:1.75;margin-bottom:1.5rem}
+.hero-stats{display:flex;gap:2rem;margin-bottom:1.6rem;flex-wrap:wrap}
+.hs .n{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:#7de8dc}
+.hs .l{font-size:.67rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em}
+.hero-disc{background:rgba(245,166,35,.18);border:1px solid rgba(245,166,35,.36);border-radius:10px;padding:10px 14px;font-size:.76rem;color:rgba(255,255,255,.85);max-width:640px}
+.hero-disc strong{color:#ffd0a0}
+
+/* LAYOUT */
+main{max-width:980px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+section{margin-bottom:3rem;scroll-margin-top:70px}
+.section-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;margin-bottom:.25rem}
+.section-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6}
+.card{background:var(--surface);border-radius:16px;border:1px solid var(--border);padding:1.4rem;box-shadow:var(--shadow);animation:fu .35s ease both}
+.card+.card{margin-top:1rem}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card-title{font-weight:700;font-size:.88rem;margin-bottom:.9rem;display:flex;align-items:center;gap:.4rem}
+
+/* GRID HELPERS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
+.g4{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:.75rem}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr}}
+
+/* FORM */
+.fs{display:flex;flex-direction:column;gap:.75rem}
+.field{display:flex;flex-direction:column;gap:.35rem}
+label{font-size:.72rem;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+input,select,textarea{width:100%;padding:.6rem .88rem;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:var(--bg);transition:border-color .2s,box-shadow .2s;outline:none;color:var(--text)}
+input:focus,select:focus,textarea:focus{border-color:var(--teal-l);box-shadow:0 0 0 3px rgba(42,168,152,.13)}
+textarea{resize:vertical;min-height:68px}
+
+/* BUTTONS */
+.btn{padding:.6rem 1.15rem;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:600;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:5px;text-decoration:none}
+.bp{background:var(--teal);color:#fff}.bp:hover{background:var(--teal-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,122,110,.26)}
+.bo{background:transparent;color:var(--teal);border:1.5px solid var(--teal)}.bo:hover{background:var(--teal-p)}
+.bg{background:var(--bg);color:var(--muted);border:1.5px solid var(--border)}.bg:hover{border-color:var(--teal-l);color:var(--teal)}
+.bd{background:var(--coral);color:#fff}.bd:hover{opacity:.87}
+.bsm{padding:.3rem .68rem;font-size:.73rem}
+.bfull{width:100%;justify-content:center;margin-top:.85rem}
+
+/* BADGES */
+.badge{padding:3px 9px;border-radius:100px;font-size:.69rem;font-weight:600;display:inline-block}
+.s-low{background:var(--coral-p);color:var(--coral)}.s-ok{background:var(--green-p);color:var(--green)}
+.s-hi{background:var(--amber-p);color:#c17d00}.s-vhi{background:var(--red-p);color:var(--red)}
+
+/* TABS */
+.tabs{display:flex;gap:.28rem;margin-bottom:1rem;flex-wrap:wrap}
+.tb{padding:.35rem .88rem;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .18s;color:var(--muted)}
+.tb.active{background:var(--teal);border-color:var(--teal);color:#fff}
+.tp{display:none}.tp.active{display:block}
+
+/* GLUCOSE */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:.6rem;margin-bottom:1.1rem}
+.sbox{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:.7rem .8rem;text-align:center}
+.sbox .sv{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--teal)}
+.sbox .sl{font-size:.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;padding:.4rem 0}
+.gauge-svg{width:174px;height:104px}
+.gauge-val{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:700;line-height:1}
+.gauge-unit{font-size:.72rem;color:var(--muted)}
+.gluc-st{margin-top:.38rem;padding:4px 14px;border-radius:100px;font-size:.74rem;font-weight:600}
+#bgCanvas{width:100%;height:175px;border-radius:10px;background:var(--bg);display:block}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:.79rem}
+.tbl th{text-align:left;padding:7px 8px;color:var(--muted);font-weight:600;font-size:.67rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border)}
+.tbl td{padding:8px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl-h tr:hover td{background:var(--bg)}
+
+/* STAT RANGE BOXES */
+.rbox{background:var(--bg);border-radius:10px;padding:.72rem .8rem}
+.rbox .rt{font-size:.66rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.rbox .rv{font-size:1.1rem;font-weight:700;color:var(--teal);margin:.24rem 0}
+.rbox .rd{font-size:.71rem;color:var(--muted)}
+
+/* CARB GRID */
+.carb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:.65rem;margin-bottom:1rem}
+.fc{border:1.5px solid var(--border);border-radius:11px;padding:.72rem;transition:all .18s;position:relative;background:var(--bg)}
+.fc:hover{border-color:var(--teal-l);background:var(--teal-p)}.fc.sel{border-color:var(--teal);background:var(--teal-p)}
+.fc h4{font-size:.78rem;font-weight:600;margin-bottom:2px;padding-right:50px}.fc p{font-size:.69rem;color:var(--muted)}
+.fc .fcc{font-size:.9rem;font-weight:700;color:var(--teal);margin-top:3px}.fc .fgi{font-size:.67rem;color:var(--muted)}
+.fq{position:absolute;top:5px;right:4px;display:flex;align-items:center;gap:2px}
+.qb{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--teal);background:#fff;color:var(--teal);font-size:.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .15s;line-height:1}
+.qb:hover{background:var(--teal);color:#fff}.qc{font-size:.75rem;font-weight:700;min-width:12px;text-align:center}
+.crb-res{background:var(--teal-p);border:1.5px solid var(--teal-l);border-radius:12px;padding:.85rem 1.1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.7rem}
+.crb-res .big{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:var(--teal)}
+.crb-res .lbl{font-size:.71rem;color:var(--teal);font-weight:600}
+
+/* INSULIN */
+.ins-res{margin-top:1.1rem;background:linear-gradient(135deg,#1a7a6e,#0e5048);border-radius:14px;padding:1.2rem;color:#fff;text-align:center;display:none}
+.ins-res.show{display:block}
+.ins-dose{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700}
+.ins-bk{margin-top:.4rem;font-size:.76rem;opacity:.8;line-height:1.9}
+.ins-warn{margin-top:.55rem;background:rgba(245,166,35,.2);border:1px solid rgba(245,166,35,.38);border-radius:8px;padding:7px 11px;font-size:.73rem}
+
+/* A1C */
+.a1c-bar{height:14px;border-radius:100px;overflow:hidden;background:linear-gradient(to right,#3aab6b,#f5a623,#e85d3a,#d93030);position:relative;margin:.7rem 0}
+.a1c-mk{position:absolute;top:-4px;width:3px;height:22px;background:var(--text);border-radius:2px;transition:left .5s}
+.a1cr{margin-top:1.1rem;border-radius:14px;padding:1.15rem;display:none;border:2px solid var(--border)}
+.a1cr.show{display:block}
+
+/* INFO CARDS */
+.ic{border-radius:13px;padding:1.05rem}
+.ic .ico{font-size:1.55rem;margin-bottom:.45rem}
+.ic h4{font-weight:600;margin-bottom:.25rem;font-size:.86rem}
+.ic p{font-size:.77rem;line-height:1.6;color:var(--muted)}
+.ic-t{background:var(--teal-p)}.ic-g{background:var(--green-p)}.ic-a{background:var(--amber-p)}.ic-c{background:var(--coral-p)}.ic-p{background:var(--purple-p)}.ic-b{background:var(--blue-p)}
+
+/* EMERGENCY */
+.em-card{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:#fff;border-radius:16px;padding:1.55rem}
+.em-card h3{font-family:'Playfair Display',serif;font-size:1.22rem;margin-bottom:.9rem}
+.em-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.15rem}
+@media(max-width:580px){.em-grid{grid-template-columns:1fr}}
+.em-block h4{font-size:.84rem;font-weight:700;margin-bottom:.35rem;opacity:.9}
+.em-block ul{padding-left:1rem;font-size:.78rem;opacity:.85;line-height:2.1}
+.em-num{font-size:.9rem;font-weight:700;margin-top:.4rem}
+.em-band{background:rgba(255,255,255,.1);border-radius:10px;padding:.75rem .9rem;margin-top:.85rem;font-size:.76rem;line-height:1.7}
+
+/* DEVICES */
+.dev-card{border:1.5px solid var(--border);border-radius:13px;padding:1rem;background:var(--surface);transition:all .2s}
+.dev-card:hover{border-color:var(--teal-l);transform:translateY(-2px);box-shadow:var(--shadow)}
+.dev-card .dc-type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.26rem}
+.dev-card h4{font-size:.86rem;font-weight:700;margin-bottom:.26rem}.dev-card p{font-size:.74rem;color:var(--muted);line-height:1.5}
+.dc-tag{display:inline-block;margin-top:.45rem;padding:2px 9px;border-radius:100px;font-size:.65rem;font-weight:600}
+
+/* FAQ */
+.faq-item{border:1px solid var(--border);border-radius:11px;overflow:hidden;margin-bottom:.5rem}
+.faq-q{padding:.8rem 1rem;font-weight:600;font-size:.84rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--surface);transition:background .18s;user-select:none;line-height:1.4}
+.faq-q:hover{background:var(--bg)}.faq-q .arr{transition:transform .25s;font-size:.68rem;color:var(--muted)}
+.faq-item.open .arr{transform:rotate(180deg)}
+.faq-a{display:none;padding:.75rem 1rem;font-size:.8rem;line-height:1.72;color:var(--muted);background:var(--bg);border-top:1px solid var(--border)}
+.faq-item.open .faq-a{display:block}
+
+/* QUIZ */
+.qopt{padding:.62rem .9rem;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;margin-bottom:.44rem;font-size:.81rem;transition:all .18s;background:var(--surface)}
+.qopt:hover:not(.correct):not(.wrong){border-color:var(--teal-l);background:var(--teal-p)}
+.qopt.correct{border-color:var(--green);background:var(--green-p);color:var(--green);cursor:default}
+.qopt.wrong{border-color:var(--coral);background:var(--coral-p);color:var(--coral);cursor:default}
+.qfb{margin-top:.6rem;padding:.7rem .9rem;border-radius:10px;font-size:.79rem;line-height:1.6;display:none}
+.qfb.show{display:block}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:1.65rem}
+.tl::before{content:'';position:absolute;left:.44rem;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:1.1rem}
+.tl-dot{position:absolute;left:-1.38rem;top:.25rem;width:10px;height:10px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px var(--teal);background:var(--teal)}
+.tl-date{font-size:.67rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.1rem}
+.tl-content{font-size:.82rem;line-height:1.55}
+
+/* CHECKLIST */
+.ls-row{display:flex;align-items:center;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--border)}
+.ls-row:last-child{border-bottom:none}.ls-label{flex:1;font-size:.83rem;font-weight:500}
+.ls-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .18s;flex-shrink:0;user-select:none}
+.ls-check.done{background:var(--green);border-color:var(--green);color:#fff}
+
+/* COMPLICATIONS */
+.comp-row{display:flex;align-items:flex-start;gap:.8rem;padding:.75rem 0;border-bottom:1px solid var(--border)}
+.comp-row:last-child{border-bottom:none}.comp-icon{font-size:1.25rem;width:30px;text-align:center;flex-shrink:0;margin-top:.08rem}
+.comp-info{flex:1}.comp-info h4{font-size:.82rem;font-weight:600;margin-bottom:2px}.comp-info p{font-size:.72rem;color:var(--muted);line-height:1.5}
+.cs{font-size:.67rem;font-weight:600;padding:3px 8px;border-radius:100px;white-space:nowrap;display:inline-block;flex-shrink:0}
+.cs-g{background:var(--green-p);color:var(--green)}.cs-w{background:var(--amber-p);color:#c17d00}.cs-r{background:var(--red-p);color:var(--red)}
+
+/* SICK DAY */
+.sick-step{display:flex;gap:.8rem;padding:.8rem 0;border-bottom:1px solid var(--border)}
+.sick-step:last-child{border-bottom:none}
+.step-num{width:25px;height:25px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:700;flex-shrink:0;margin-top:.08rem}
+.step-body h4{font-size:.82rem;font-weight:600;margin-bottom:.18rem}.step-body p{font-size:.77rem;color:var(--muted);line-height:1.55}
+
+/* NOTICES */
+.notice{border-radius:10px;padding:.72rem .9rem;font-size:.78rem;line-height:1.65;margin:.75rem 0}
+.ni{background:var(--blue-p);border-left:3px solid var(--blue)}
+.nw{background:var(--amber-p);border-left:3px solid var(--amber)}
+.nd{background:var(--red-p);border-left:3px solid var(--red)}
+.ng{background:var(--green-p);border-left:3px solid var(--green)}
+
+/* TRAVEL */
+.travel-tip{display:flex;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--border)}
+.travel-tip:last-child{border-bottom:none}
+.tt-icon{font-size:1.2rem;flex-shrink:0;width:26px;text-align:center;margin-top:.04rem}
+
+/* BURNOUT/MENTAL */
+.burnout-q{margin-bottom:.9rem}
+.burnout-q p{font-size:.84rem;font-weight:500;margin-bottom:.45rem}
+.slider-wrap{display:flex;align-items:center;gap:.7rem}
+.slider-wrap input[type=range]{flex:1;accent-color:var(--teal)}
+.slider-val{width:26px;text-align:center;font-weight:700;font-size:.84rem;color:var(--teal)}
+
+/* RESOURCES */
+.res-card{display:flex;align-items:flex-start;gap:.75rem;padding:.8rem;border:1.5px solid var(--border);border-radius:11px;background:var(--surface);transition:all .18s;text-decoration:none;color:inherit}
+.res-card:hover{border-color:var(--teal-l);background:var(--teal-p)}
+.res-icon{font-size:1.3rem;flex-shrink:0}
+
+/* DIVIDER */
+.sec-div{display:flex;align-items:center;gap:1rem;margin:1.2rem 0}
+.sec-div::before,.sec-div::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-div span{font-size:.67rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
+
+/* CMP TABLE */
+.cmp-tbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.cmp-tbl th{background:var(--teal);color:#fff;padding:7px 9px;text-align:left;font-size:.69rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.cmp-tbl td{padding:7px 9px;border-bottom:1px solid var(--border)}
+.cmp-tbl tr:nth-child(even) td{background:var(--bg)}
+
+/* PROGRESS */
+.prog-bar{height:7px;border-radius:100px;background:var(--border);overflow:hidden;margin:4px 0}
+.prog-fill{height:100%;border-radius:100px;transition:width .5s ease}
+
+/* FOOTER */
+footer{text-align:center;padding:1.6rem 1rem;font-size:.74rem;color:var(--muted);border-top:1px solid var(--border)}
+footer strong{color:var(--teal)}
+.footer-links{display:flex;justify-content:center;gap:1.3rem;flex-wrap:wrap;margin-bottom:.6rem}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:.76rem}.footer-links a:hover{color:var(--teal)}
+
+/* EXERCISE CALCULATOR */
+.ex-result{background:linear-gradient(135deg,#1a3a70,#1e4bb8);border-radius:13px;padding:1.1rem;color:#fff;text-align:center;display:none;margin-top:1rem}
+.ex-result.show{display:block}
+.ex-result .ex-val{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700}
+
+/* MEDICATION LOG */
+.med-row{display:flex;align-items:center;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--border)}
+.med-row:last-child{border-bottom:none}
+.med-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.med-info{flex:1}
+.med-info h4{font-size:.82rem;font-weight:600}
+.med-info p{font-size:.71rem;color:var(--muted)}
+
+/* BODY WEIGHT BMI */
+.bmi-result{padding:1rem;border-radius:12px;border:2px solid var(--border);margin-top:1rem;display:none}
+.bmi-result.show{display:block}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#"><span>🩸</span> Beat Diabetes</a>
+  <ul class="nav-scroll">
+    <li><a href="#tracker"       onclick="navTo(event,'tracker')">Glucose</a></li>
+    <li><a href="#carbs"         onclick="navTo(event,'carbs')">Carbs</a></li>
+    <li><a href="#insulin"       onclick="navTo(event,'insulin')">Insulin</a></li>
+    <li><a href="#a1c"           onclick="navTo(event,'a1c')">A1C</a></li>
+    <li><a href="#exercise"      onclick="navTo(event,'exercise')">Exercise</a></li>
+    <li><a href="#medications"   onclick="navTo(event,'medications')">Medications</a></li>
+    <li><a href="#checklist"     onclick="navTo(event,'checklist')">Daily Checklist</a></li>
+    <li><a href="#nutrition"     onclick="navTo(event,'nutrition')">Nutrition</a></li>
+    <li><a href="#sickday"       onclick="navTo(event,'sickday')">Sick Day</a></li>
+    <li><a href="#complications" onclick="navTo(event,'complications')">Screenings</a></li>
+    <li><a href="#devices"       onclick="navTo(event,'devices')">Devices &amp; Tech</a></li>
+    <li><a href="#mental"        onclick="navTo(event,'mental')">Mental Health</a></li>
+    <li><a href="#travel"        onclick="navTo(event,'travel')">Travel</a></li>
+    <li><a href="#learn"         onclick="navTo(event,'learn')">Learn + Quiz</a></li>
+    <li><a href="#resources"     onclick="navTo(event,'resources')">Resources</a></li>
+    <li><a href="#emergency"     onclick="navTo(event,'emergency')">🚨 Emergency</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Type 1 Diabetes Companion</div>
+    <h1>Manage your <em>glucose</em>,<br>master your life.</h1>
+    <p class="hero-sub">A comprehensive, interactive hub built for people living with Type 1 Diabetes — 16 tools covering glucose tracking, carb counting, insulin dosing, exercise guidance, medications, nutrition, sick days, screenings, devices, mental health, travel, and more.</p>
+    <div class="hero-stats">
+      <div class="hs"><div class="n">8.4M+</div><div class="l">People with T1D worldwide</div></div>
+      <div class="hs"><div class="n">70%+</div><div class="l">Time-in-range goal (ADA)</div></div>
+      <div class="hs"><div class="n">&lt;7%</div><div class="l">ADA A1C target</div></div>
+      <div class="hs"><div class="n">16</div><div class="l">Interactive tools</div></div>
+    </div>
+    <div class="hero-disc"><strong>⚠️ Medical Disclaimer:</strong> This tool is for educational &amp; self-tracking purposes only. Always consult your endocrinologist, diabetologist, or certified diabetes educator before making any treatment decisions.</div>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════
+     1. GLUCOSE TRACKER
+══════════════════════════════════ -->
+<section id="tracker">
+  <div class="section-title">🩸 Blood Glucose Tracker</div>
+  <div class="section-sub">Log readings with mood and context. Monitor Time-in-Range, average, CV%, and daily trends in real-time.</div>
+  <div class="card">
+    <div class="stat-row">
+      <div class="sbox"><div class="sv" id="statAvg">—</div><div class="sl">Average</div></div>
+      <div class="sbox"><div class="sv" id="statLow">—</div><div class="sl">Lowest</div></div>
+      <div class="sbox"><div class="sv" id="statHigh">—</div><div class="sl">Highest</div></div>
+      <div class="sbox"><div class="sv" id="statTIR">—</div><div class="sl">Time In Range</div></div>
+      <div class="sbox"><div class="sv" id="statCV">—</div><div class="sl">CV%</div></div>
+      <div class="sbox"><div class="sv" id="statCount">0</div><div class="sl">Readings</div></div>
+    </div>
+    <div class="g2">
+      <div class="fs">
+        <div class="field"><label>Blood Glucose (mg/dL)</label><input type="number" id="bgInput" placeholder="e.g. 110" min="20" max="600"></div>
+        <div class="field"><label>Meal Context</label>
+          <select id="mealCtx">
+            <option value="fasting">Fasting / Before Meal</option>
+            <option value="post">1–2 hrs After Meal</option>
+            <option value="bedtime">Bedtime</option>
+            <option value="night">Night Check</option>
+            <option value="exercise">Post-Exercise</option>
+            <option value="sick">Sick Day Check</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label>How do you feel?</label>
+          <select id="moodCtx">
+            <option value="">Not specified</option>
+            <option value="😊 Well">😊 Feeling well</option>
+            <option value="😴 Tired">😴 Tired / fatigued</option>
+            <option value="😰 Shaky">😰 Shaky / dizzy</option>
+            <option value="🤢 Nauseous">🤢 Nauseous</option>
+            <option value="🤕 Headache">🤕 Headache</option>
+            <option value="😤 Stressed">😤 Stressed</option>
+            <option value="💪 Energetic">💪 Energetic</option>
+          </select>
+        </div>
+        <div class="field"><label>Notes</label><input type="text" id="bgNotes" placeholder="e.g. forgot to pre-bolus, ran 5km"></div>
+        <button class="btn bp" onclick="logGlucose()">➕ Log Reading</button>
+      </div>
+      <div class="gauge-wrap">
+        <svg class="gauge-svg" viewBox="0 0 174 104">
+          <defs><linearGradient id="gGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#e85d3a"/>
+            <stop offset="22%" style="stop-color:#f5a623"/>
+            <stop offset="46%" style="stop-color:#3aab6b"/>
+            <stop offset="72%" style="stop-color:#f5a623"/>
+            <stop offset="100%" style="stop-color:#d93030"/>
+          </linearGradient></defs>
+          <path d="M13,98 A74,74 0 0,1 161,98" fill="none" stroke="#e2ddd6" stroke-width="12" stroke-linecap="round"/>
+          <path id="gaugeArc" d="M13,98 A74,74 0 0,1 161,98" fill="none" stroke="url(#gGrad)" stroke-width="12" stroke-linecap="round" stroke-dasharray="232" stroke-dashoffset="232" style="transition:stroke-dashoffset .6s ease"/>
+          <line id="gaugeNeedle" x1="87" y1="98" x2="87" y2="32" stroke="#1e2a28" stroke-width="2.2" stroke-linecap="round" transform="rotate(-90,87,98)" style="transition:transform .6s ease"/>
+          <circle cx="87" cy="98" r="4" fill="#1e2a28"/>
+          <text x="10" y="102" font-size="8" fill="#e85d3a" font-family="DM Sans">70</text>
+          <text x="160" y="102" font-size="8" fill="#d93030" font-family="DM Sans" text-anchor="end">250</text>
+        </svg>
+        <div class="gauge-val" id="gaugeVal">—</div>
+        <div class="gauge-unit">mg/dL</div>
+        <div class="gluc-st s-ok" id="glucoseStatus">Enter a reading</div>
+        <div style="margin-top:.7rem;font-size:.69rem;color:var(--muted);text-align:center;line-height:2">
+          <span style="color:var(--coral)">●</span> &lt;70 Low &nbsp;
+          <span style="color:var(--green)">●</span> 70–180 In Range &nbsp;
+          <span style="color:var(--amber)">●</span> 181–250 High &nbsp;
+          <span style="color:var(--red)">●</span> &gt;250 Very High
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:1.1rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.38rem">
+        <div style="font-size:.71rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Today's Trend</div>
+        <button class="btn bg bsm" onclick="clearLog()">🗑 Clear Log</button>
+      </div>
+      <canvas id="bgCanvas"></canvas>
+    </div>
+    <div id="logWrap" style="margin-top:1.1rem;display:none">
+      <div class="sec-div"><span>Reading Log</span></div>
+      <div style="overflow-x:auto">
+        <table class="tbl tbl-h"><thead><tr><th>Time</th><th>mg/dL</th><th>Context</th><th>Mood</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody id="logBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+  <!-- ADA Targets Reference -->
+  <div class="card">
+    <div class="card-title">📐 ADA Blood Glucose Target Ranges (2024)</div>
+    <div class="g4">
+      <div class="rbox"><div class="rt">Fasting / Pre-meal</div><div class="rv">80–130 mg/dL</div><div class="rd">Most non-pregnant adults</div></div>
+      <div class="rbox"><div class="rt">Post-meal (2 hrs)</div><div class="rv">&lt;180 mg/dL</div><div class="rd">Two hours after first bite</div></div>
+      <div class="rbox"><div class="rt">Bedtime</div><div class="rv">100–140 mg/dL</div><div class="rd">Reduces overnight lows</div></div>
+      <div class="rbox"><div class="rt">During Exercise</div><div class="rv">120–180 mg/dL</div><div class="rd">Ideal pre-exercise range</div></div>
+      <div class="rbox"><div class="rt">Time In Range Goal</div><div class="rv" style="color:var(--green)">&gt;70%</div><div class="rd">70–180 mg/dL per ADA 2024</div></div>
+      <div class="rbox"><div class="rt">Time Below Range</div><div class="rv" style="color:var(--coral)">&lt;4%</div><div class="rd">&lt;70 mg/dL — minimise lows</div></div>
+      <div class="rbox"><div class="rt">Coefficient of Variation</div><div class="rv" style="color:var(--purple)">&lt;36%</div><div class="rd">Low variability target</div></div>
+      <div class="rbox"><div class="rt">Pregnancy Target</div><div class="rv" style="color:var(--blue)">60–99 / &lt;140</div><div class="rd">Fasting / 1-hr post-meal</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     2. CARB CALCULATOR
+══════════════════════════════════ -->
+<section id="carbs">
+  <div class="section-title">🌾 Carbohydrate Calculator</div>
+  <div class="section-sub">Select foods and servings to calculate total carbs, exchanges, glycaemic index (GI), and estimated glucose rise. GI: Low &lt;55 · Medium 56–69 · High ≥70.</div>
+  <div class="card">
+    <div class="tabs">
+      <button class="tb active" onclick="switchTab(this,'cat-grains')">🌾 Grains</button>
+      <button class="tb" onclick="switchTab(this,'cat-fruits')">🍎 Fruits</button>
+      <button class="tb" onclick="switchTab(this,'cat-dairy')">🥛 Dairy</button>
+      <button class="tb" onclick="switchTab(this,'cat-veggies')">🥦 Vegetables</button>
+      <button class="tb" onclick="switchTab(this,'cat-protein')">🥩 Proteins</button>
+      <button class="tb" onclick="switchTab(this,'cat-snacks')">🍪 Snacks</button>
+      <button class="tb" onclick="switchTab(this,'cat-drinks')">🥤 Drinks</button>
+      <button class="tb" onclick="switchTab(this,'cat-fastfood')">🍔 Fast Food</button>
+      <button class="tb" onclick="switchTab(this,'cat-indian')">🍛 Indian Foods</button>
+    </div>
+    <div id="cat-grains"   class="tp active"><div class="carb-grid" id="grid-grains"></div></div>
+    <div id="cat-fruits"   class="tp"><div class="carb-grid" id="grid-fruits"></div></div>
+    <div id="cat-dairy"    class="tp"><div class="carb-grid" id="grid-dairy"></div></div>
+    <div id="cat-veggies"  class="tp"><div class="carb-grid" id="grid-veggies"></div></div>
+    <div id="cat-protein"  class="tp"><div class="carb-grid" id="grid-protein"></div></div>
+    <div id="cat-snacks"   class="tp"><div class="carb-grid" id="grid-snacks"></div></div>
+    <div id="cat-drinks"   class="tp"><div class="carb-grid" id="grid-drinks"></div></div>
+    <div id="cat-fastfood" class="tp"><div class="carb-grid" id="grid-fastfood"></div></div>
+    <div id="cat-indian"   class="tp"><div class="carb-grid" id="grid-indian"></div></div>
+    <div class="crb-res">
+      <div><div class="lbl">TOTAL CARBS</div><div class="big" id="totalCarbs">0 g</div></div>
+      <div><div class="lbl">EXCHANGES (15g)</div><div class="big" id="carbExchanges">0.0</div></div>
+      <div><div class="lbl">EST. GLUCOSE RISE</div><div class="big" id="carbGlucRise">+0</div><div style="font-size:.65rem;color:var(--teal)">mg/dL approx</div></div>
+      <div><div class="lbl">AVG GI</div><div class="big" id="carbAvgGI">—</div></div>
+      <button class="btn bg bsm" onclick="resetCarbs()">Reset</button>
+    </div>
+    <div class="notice nw">💡 <strong>Net Carb Tip:</strong> For foods with &gt;5g fiber per serving, subtract half the fiber from total carbs. Fiber slows glucose absorption and may reduce your bolus need.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Glycaemic Index Reference Guide</div>
+    <div class="g3">
+      <div style="background:var(--green-p);border-radius:12px;padding:.9rem">
+        <div style="font-weight:700;color:var(--green);margin-bottom:.4rem">🟢 Low GI (&lt;55)</div>
+        <div style="font-size:.76rem;color:var(--muted);line-height:1.9">Sweet potato · Lentils · Chickpeas · Oats · Most fruits · Yogurt · Milk · Most vegetables · Basmati rice · Pasta al dente</div>
+      </div>
+      <div style="background:var(--amber-p);border-radius:12px;padding:.9rem">
+        <div style="font-weight:700;color:#c17d00;margin-bottom:.4rem">🟡 Medium GI (56–69)</div>
+        <div style="font-size:.76rem;color:var(--muted);line-height:1.9">Brown rice · Whole wheat bread · Pineapple · Raisins · Popcorn · Ice cream · Banana · Couscous · Pita bread</div>
+      </div>
+      <div style="background:var(--red-p);border-radius:12px;padding:.9rem">
+        <div style="font-weight:700;color:var(--red);margin-bottom:.4rem">🔴 High GI (≥70)</div>
+        <div style="font-size:.76rem;color:var(--muted);line-height:1.9">White rice · White bread · Bagel · Cornflakes · Watermelon · Potato (baked) · Sports drinks · Glucose · Jasmine rice</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     3. INSULIN CALCULATOR
+══════════════════════════════════ -->
+<section id="insulin">
+  <div class="section-title">💉 Insulin Dose Estimator</div>
+  <div class="section-sub">Estimate bolus insulin from carb intake and correction need. <strong>Always verify doses with your diabetes care team.</strong></div>
+  <div class="card">
+    <div class="g2">
+      <div class="fs">
+        <div class="field"><label>Current Blood Glucose (mg/dL)</label><input type="number" id="iCurrentBG" placeholder="e.g. 180"></div>
+        <div class="field"><label>Target Blood Glucose (mg/dL)</label><input type="number" id="iTargetBG" placeholder="e.g. 100" value="100"></div>
+        <div class="field"><label>Correction Factor (mg/dL per unit)</label><input type="number" id="iCF" placeholder="e.g. 50" value="50"></div>
+        <div class="field"><label>Active Insulin on Board (units)</label><input type="number" id="iIOB" placeholder="e.g. 0" value="0" step="0.1"></div>
+      </div>
+      <div class="fs">
+        <div class="field"><label>Carbohydrates to Eat (g)</label><input type="number" id="iCarbs" placeholder="e.g. 45"></div>
+        <div class="field"><label>Insulin-to-Carb Ratio (g per unit)</label><input type="number" id="iICR" placeholder="e.g. 15" value="15"></div>
+        <div class="field"><label>Insulin Type</label>
+          <select id="iType">
+            <option value="rapid">Rapid-acting (Lispro/Aspart/Glulisine)</option>
+            <option value="regular">Regular (Humulin R)</option>
+            <option value="ultra">Ultra-rapid (Fiasp/Lyumjev)</option>
+          </select>
+        </div>
+        <div class="field"><label>Pre-bolus Timing</label>
+          <select id="iPrebolus">
+            <option value="0">Eating now (0 min)</option>
+            <option value="15">Pre-bolus 15 min</option>
+            <option value="20">Pre-bolus 20 min (ideal)</option>
+            <option value="30">Pre-bolus 30 min (high-fat meal)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button class="btn bp bfull" onclick="calcInsulin()">⚡ Calculate Dose</button>
+    <div class="ins-res" id="insulinResult">
+      <div style="font-size:.8rem;opacity:.8;margin-bottom:.2rem">Estimated Bolus Dose</div>
+      <div class="ins-dose" id="insulinDose">0.0 u</div>
+      <div class="ins-bk" id="insulinBreakdown"></div>
+      <div class="ins-warn">⚠️ This is an estimate only. Confirm with your endocrinologist before adjusting doses. Never auto-dose based on a calculator alone.</div>
+    </div>
+    <div class="notice ni" style="margin-top:1rem">📖 <strong>Tip:</strong> Pre-bolusing 15–20 minutes before meals (especially for high-carb or high-GI foods) significantly reduces post-meal glucose spikes for most rapid-acting insulins.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 Common Insulin Types Reference</div>
+    <div style="overflow-x:auto">
+    <table class="cmp-tbl">
+      <thead><tr><th>Insulin</th><th>Type</th><th>Onset</th><th>Peak</th><th>Duration</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>Lispro (Humalog)</td><td>Rapid</td><td>5–15 min</td><td>30–90 min</td><td>3–4 hrs</td><td>Bolus / meal</td></tr>
+        <tr><td>Aspart (NovoLog)</td><td>Rapid</td><td>10–20 min</td><td>40–50 min</td><td>3–5 hrs</td><td>Bolus / meal</td></tr>
+        <tr><td>Glulisine (Apidra)</td><td>Rapid</td><td>10–20 min</td><td>55 min</td><td>3–4 hrs</td><td>Bolus / meal</td></tr>
+        <tr><td>Fiasp</td><td>Ultra-rapid</td><td>2–5 min</td><td>30–60 min</td><td>3–4 hrs</td><td>Bolus — faster onset</td></tr>
+        <tr><td>Humulin R / Novolin R</td><td>Regular</td><td>30–60 min</td><td>2–4 hrs</td><td>5–8 hrs</td><td>Bolus / pump</td></tr>
+        <tr><td>NPH (Humulin N)</td><td>Intermediate</td><td>1–3 hrs</td><td>6–8 hrs</td><td>12–16 hrs</td><td>Basal (split dose)</td></tr>
+        <tr><td>Glargine (Lantus/Basaglar)</td><td>Long-acting</td><td>1–2 hrs</td><td>Peakless</td><td>20–24 hrs</td><td>Basal (once daily)</td></tr>
+        <tr><td>Detemir (Levemir)</td><td>Long-acting</td><td>1–3 hrs</td><td>6–8 hrs</td><td>6–23 hrs</td><td>Basal (once or twice)</td></tr>
+        <tr><td>Degludec (Tresiba)</td><td>Ultra-long</td><td>1 hr</td><td>Peakless</td><td>&gt;42 hrs</td><td>Basal — very flexible</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     4. A1C ESTIMATOR
+══════════════════════════════════ -->
+<section id="a1c">
+  <div class="section-title">📊 A1C & GMI Estimator</div>
+  <div class="section-sub">Estimate HbA1c from average BG or calculate your Glucose Management Indicator (GMI) from Time in Range data.</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">🧮 Estimate A1C from Average BG</div>
+      <div class="fs">
+        <div class="field"><label>Average Blood Glucose (mg/dL)</label><input type="number" id="avgBG" placeholder="e.g. 154"></div>
+        <button class="btn bp bfull" onclick="calcA1C()">Estimate A1C</button>
+      </div>
+      <div class="a1cr" id="a1cResult">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem">
+          <div>
+            <div style="font-size:.71rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Estimated HbA1c</div>
+            <div style="font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700" id="a1cVal">—</div>
+            <div id="a1cLabel" style="font-size:.86rem;font-weight:600"></div>
+          </div>
+          <div style="flex:1;min-width:180px">
+            <div style="font-size:.76rem;color:var(--muted);display:flex;justify-content:space-between"><span>5%</span><span>Optimal 7%</span><span>High 9%</span><span>13%</span></div>
+            <div class="a1c-bar"><div class="a1c-mk" id="a1cMarker" style="left:0%"></div></div>
+          </div>
+        </div>
+        <div id="a1cNote" style="margin-top:.9rem;padding:.8rem;background:var(--bg);border-radius:10px;font-size:.8rem;line-height:1.7;color:var(--muted)"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📈 A1C to Average BG Conversion Table</div>
+      <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead><tr><th>A1C %</th><th>Avg BG mg/dL</th><th>Avg BG mmol/L</th><th>Assessment</th></tr></thead>
+        <tbody>
+          <tr><td>5.0%</td><td>97</td><td>5.4</td><td><span class="badge s-ok">Normal</span></td></tr>
+          <tr><td>5.5%</td><td>111</td><td>6.2</td><td><span class="badge s-ok">Normal</span></td></tr>
+          <tr><td>6.0%</td><td>126</td><td>7.0</td><td><span class="badge" style="background:var(--teal-p);color:var(--teal)">Pre-diabetic</span></td></tr>
+          <tr><td>6.5%</td><td>140</td><td>7.8</td><td><span class="badge" style="background:var(--teal-p);color:var(--teal)">Dx Threshold</span></td></tr>
+          <tr><td>7.0%</td><td>154</td><td>8.6</td><td><span class="badge s-ok">T1D Target</span></td></tr>
+          <tr><td>7.5%</td><td>169</td><td>9.4</td><td><span class="badge s-hi">Above Target</span></td></tr>
+          <tr><td>8.0%</td><td>183</td><td>10.2</td><td><span class="badge s-hi">Above Target</span></td></tr>
+          <tr><td>9.0%</td><td>212</td><td>11.8</td><td><span class="badge s-vhi">High Risk</span></td></tr>
+          <tr><td>10.0%</td><td>240</td><td>13.4</td><td><span class="badge s-vhi">High Risk</span></td></tr>
+          <tr><td>12.0%</td><td>298</td><td>16.5</td><td><span class="badge s-vhi">Very High</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     5. EXERCISE GUIDE
+══════════════════════════════════ -->
+<section id="exercise">
+  <div class="section-title">🏃 Exercise & Glucose Management</div>
+  <div class="section-sub">Exercise affects blood glucose differently depending on type, duration, and intensity. Plan your activity safely.</div>
+  <div class="card">
+    <div class="card-title">⚡ Pre-Exercise Glucose Checker</div>
+    <div class="g2">
+      <div class="fs">
+        <div class="field"><label>Pre-Exercise Blood Glucose (mg/dL)</label><input type="number" id="exBG" placeholder="e.g. 130"></div>
+        <div class="field"><label>Exercise Type</label>
+          <select id="exType">
+            <option value="aerobic">Aerobic (running, cycling, swimming)</option>
+            <option value="hiit">HIIT / Interval Training</option>
+            <option value="strength">Strength / Weight Training</option>
+            <option value="yoga">Yoga / Stretching / Pilates</option>
+            <option value="sports">Team Sports (soccer, basketball)</option>
+            <option value="walk">Light Walk (&lt;30 min)</option>
+          </select>
+        </div>
+        <div class="field"><label>Planned Duration (minutes)</label><input type="number" id="exDur" placeholder="e.g. 45" value="45"></div>
+        <div class="field"><label>Time Since Last Bolus (hours)</label><input type="number" id="exIOB" placeholder="e.g. 2" value="2" step="0.5"></div>
+        <button class="btn bp bfull" onclick="calcExercise()">Get Exercise Guidance</button>
+      </div>
+      <div>
+        <div class="ex-result" id="exResult">
+          <div style="font-size:.78rem;opacity:.8;margin-bottom:.3rem">Pre-Exercise Status</div>
+          <div class="ex-val" id="exStatus">—</div>
+          <div id="exAdvice" style="font-size:.79rem;margin-top:.6rem;opacity:.9;line-height:1.7"></div>
+        </div>
+        <div class="notice ni" style="margin-top:.8rem">🩸 <strong>Always check BG</strong> before, during (every 30 min for long exercise), and after physical activity. Keep fast-acting carbs nearby.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📚 Exercise Type Effects on Blood Glucose</div>
+    <div style="overflow-x:auto">
+    <table class="cmp-tbl">
+      <thead><tr><th>Exercise Type</th><th>BG Effect</th><th>Peak Risk</th><th>Pre-exercise Target</th><th>Key Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Aerobic (moderate)</td><td>📉 Lowers BG</td><td>During &amp; 4–8 hrs after</td><td>126–180 mg/dL</td><td>Reduce basal 50%, eat 15–30g carbs/hr</td></tr>
+        <tr><td>HIIT / Intense Sprints</td><td>📈 Can raise BG first</td><td>1–2 hrs after</td><td>120–180 mg/dL</td><td>Adrenaline spike; late-onset hypoglycemia risk</td></tr>
+        <tr><td>Strength Training</td><td>📈 May raise BG</td><td>2–4 hrs after</td><td>120–180 mg/dL</td><td>Often needs small correction dose after session</td></tr>
+        <tr><td>Yoga / Light Stretching</td><td>Minimal effect</td><td>Low risk</td><td>Any safe range</td><td>Stress hormones may cause slight rise</td></tr>
+        <tr><td>Long endurance (&gt;90 min)</td><td>📉 Significant drop</td><td>During &amp; 12 hrs after</td><td>144–180 mg/dL</td><td>Reduce basal 70–80%, frequent BG checks</td></tr>
+        <tr><td>Swimming</td><td>📉 Lowers BG</td><td>During &amp; after</td><td>130–180 mg/dL</td><td>Hard to check BG; set higher target pre-swim</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="ic ic-g"><div class="ico">🍌</div><h4>Pre-Exercise Snack</h4><p>If BG is 90–120 mg/dL before aerobic exercise, eat 15–30g fast-acting carbs (banana, glucose tabs, juice). No bolus needed for this snack.</p></div>
+    <div class="ic ic-t"><div class="ico">⏰</div><h4>Timing Matters</h4><p>Avoid exercising at peak insulin activity (1–3 hrs after bolus). Morning exercise with lower insulin-on-board is safer for most T1D athletes.</p></div>
+    <div class="ic ic-a"><div class="ico">🌙</div><h4>Overnight Hypoglycemia</h4><p>Late-afternoon/evening exercise increases overnight hypo risk. Have a 15–30g complex carb snack before bed. Set a CGM low alarm at 80 mg/dL.</p></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     6. MEDICATIONS
+══════════════════════════════════ -->
+<section id="medications">
+  <div class="section-title">💊 Medications & Adjunct Therapies</div>
+  <div class="section-sub">Beyond insulin, several medications and supplements play a role in T1D management. Always discuss with your doctor before starting or stopping any medication.</div>
+  <div class="card">
+    <div class="card-title">📋 Medication Tracker</div>
+    <div class="g2">
+      <div class="fs">
+        <div class="field"><label>Medication Name</label><input type="text" id="medName" placeholder="e.g. Metformin, Pramlintide"></div>
+        <div class="field"><label>Dose &amp; Frequency</label><input type="text" id="medDose" placeholder="e.g. 500mg twice daily"></div>
+        <div class="field"><label>Purpose</label>
+          <select id="medType">
+            <option value="insulin-basal">Basal Insulin</option>
+            <option value="insulin-bolus">Bolus Insulin</option>
+            <option value="adjunct">Adjunct (Metformin, Pramlintide)</option>
+            <option value="thyroid">Thyroid (Levothyroxine)</option>
+            <option value="celiac">Celiac / Supplements</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Notes / Reminders</label><input type="text" id="medNotes" placeholder="e.g. take with food"></div>
+        <button class="btn bp" onclick="addMed()">➕ Add Medication</button>
+      </div>
+      <div>
+        <div id="medList" style="min-height:80px">
+          <div style="font-size:.8rem;color:var(--muted);padding:.8rem 0">No medications logged yet. Add your first one →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">💡 Adjunct Medications in T1D (Evidence-Based)</div>
+    <div class="g3">
+      <div class="ic ic-b"><div class="ico">💊</div><h4>Metformin</h4><p>Used off-label in T1D for insulin resistance. May reduce insulin dose requirements. Common in overweight T1D patients. Discuss with your doctor.</p></div>
+      <div class="ic ic-p"><div class="ico">💉</div><h4>Pramlintide (Symlin)</h4><p>Amylin analog injected with meals. Slows gastric emptying, reduces post-meal spikes, may reduce insulin needs. Can cause nausea initially.</p></div>
+      <div class="ic ic-t"><div class="ico">🫀</div><h4>SGLT-2 Inhibitors</h4><p>Dapagliflozin/Sotagliflozin used off-label in T1D. Reduces glucose excretion, lowers A1C. DKA risk is higher — requires strict monitoring.</p></div>
+      <div class="ic ic-g"><div class="ico">🦋</div><h4>Levothyroxine</h4><p>Autoimmune thyroid disease (Hashimoto's) affects up to 30% of T1D patients. Thyroid function should be tested annually.</p></div>
+      <div class="ic ic-a"><div class="ico">🌿</div><h4>Vitamin D &amp; Magnesium</h4><p>Deficiencies are common in T1D. Supplementation may improve insulin sensitivity. Get levels tested at annual review.</p></div>
+      <div class="ic ic-c"><div class="ico">🫁</div><h4>Celiac Disease</h4><p>Affects 5–10% of T1D patients. Gluten-free diet significantly improves glucose control and intestinal absorption. Annual screening recommended.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     7. DAILY CHECKLIST
+══════════════════════════════════ -->
+<section id="checklist">
+  <div class="section-title">✅ Daily Diabetes Management Checklist</div>
+  <div class="section-sub">A structured daily routine is one of the most powerful tools for consistent glucose management. Track your progress below.</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">☀️ Morning Routine</div>
+      <div id="morning-checks"></div>
+      <div style="margin-top:.8rem;font-size:.78rem;color:var(--muted)" id="morning-progress"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌙 Evening Routine</div>
+      <div id="evening-checks"></div>
+      <div style="margin-top:.8rem;font-size:.78rem;color:var(--muted)" id="evening-progress"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 Weekly Tasks</div>
+      <div id="weekly-checks"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🗓️ Monthly &amp; Annual Tasks</div>
+      <div id="monthly-checks"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1rem">
+    <div class="card-title">📆 Appointment Tracker</div>
+    <div class="g3">
+      <div class="fs">
+        <div class="field"><label>Appointment Type</label>
+          <select id="apptType">
+            <option>Endocrinologist</option><option>Ophthalmologist (eye check)</option>
+            <option>Nephrologist (kidney)</option><option>Podiatrist (foot)</option>
+            <option>Cardiologist</option><option>Dietitian / CDE</option><option>General Physician</option>
+          </select>
+        </div>
+        <div class="field"><label>Next Due Date</label><input type="date" id="apptDate"></div>
+        <div class="field"><label>Notes</label><input type="text" id="apptNotes" placeholder="e.g. fasting required"></div>
+        <button class="btn bp" onclick="addAppt()">➕ Add Appointment</button>
+      </div>
+      <div style="grid-column:span 2">
+        <div id="apptList"><div style="font-size:.8rem;color:var(--muted)">No appointments yet. Add your next check-up.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     8. NUTRITION GUIDE
+══════════════════════════════════ -->
+<section id="nutrition">
+  <div class="section-title">🥗 Nutrition & Meal Planning</div>
+  <div class="section-sub">Smart nutrition choices are fundamental to stable glucose control. Learn evidence-based dietary strategies for T1D.</div>
+  <div class="card">
+    <div class="card-title">🧮 Daily Calorie & Macronutrient Calculator</div>
+    <div class="g2">
+      <div class="fs">
+        <div class="g2">
+          <div class="field"><label>Weight (kg)</label><input type="number" id="nutWt" placeholder="e.g. 70"></div>
+          <div class="field"><label>Height (cm)</label><input type="number" id="nutHt" placeholder="e.g. 170"></div>
+        </div>
+        <div class="field"><label>Age</label><input type="number" id="nutAge" placeholder="e.g. 35"></div>
+        <div class="field"><label>Gender</label>
+          <select id="nutGender"><option value="m">Male</option><option value="f">Female</option></select>
+        </div>
+        <div class="field"><label>Activity Level</label>
+          <select id="nutActivity">
+            <option value="1.2">Sedentary (desk job, little exercise)</option>
+            <option value="1.375">Lightly active (1–3 days/week)</option>
+            <option value="1.55" selected>Moderately active (3–5 days/week)</option>
+            <option value="1.725">Very active (6–7 days/week)</option>
+            <option value="1.9">Extremely active (athlete/physical job)</option>
+          </select>
+        </div>
+        <button class="btn bp bfull" onclick="calcNutrition()">Calculate Needs</button>
+      </div>
+      <div id="nutResult" style="display:none">
+        <div class="g2">
+          <div class="sbox"><div class="sv" id="nutCalories">—</div><div class="sl">Calories/day</div></div>
+          <div class="sbox"><div class="sv" id="nutBMI">—</div><div class="sl">BMI</div></div>
+        </div>
+        <div style="margin-top:.8rem;background:var(--bg);border-radius:12px;padding:.9rem">
+          <div style="font-size:.73rem;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:.65rem">Recommended Macros</div>
+          <div style="margin-bottom:.5rem">
+            <div style="display:flex;justify-content:space-between;font-size:.79rem;font-weight:500;margin-bottom:3px"><span>Carbohydrates (45–50%)</span><span id="nutCarbs">— g</span></div>
+            <div class="prog-bar"><div class="prog-fill" id="carbFill" style="width:48%;background:var(--teal)"></div></div>
+          </div>
+          <div style="margin-bottom:.5rem">
+            <div style="display:flex;justify-content:space-between;font-size:.79rem;font-weight:500;margin-bottom:3px"><span>Protein (20–25%)</span><span id="nutProtein">— g</span></div>
+            <div class="prog-bar"><div class="prog-fill" id="protFill" style="width:22%;background:var(--green)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:.79rem;font-weight:500;margin-bottom:3px"><span>Fat (30–35%)</span><span id="nutFat">— g</span></div>
+            <div class="prog-bar"><div class="prog-fill" id="fatFill" style="width:32%;background:var(--amber)"></div></div>
+          </div>
+        </div>
+        <div id="nutBMINote" style="margin-top:.6rem;font-size:.76rem;color:var(--muted);line-height:1.6"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🍽️ T1D-Friendly Dietary Strategies</div>
+    <div class="g3">
+      <div class="ic ic-g"><div class="ico">🥗</div><h4>Low-Carb / Ketogenic</h4><p>Reduces carb intake to 20–100g/day. Can dramatically reduce insulin requirements and glucose variability. Requires careful medical supervision and insulin adjustment.</p></div>
+      <div class="ic ic-t"><div class="ico">🌊</div><h4>Mediterranean Diet</h4><p>Emphasises olive oil, fish, legumes, and vegetables. Lower GI foods reduce post-meal spikes. Associated with improved cardiovascular outcomes in T1D.</p></div>
+      <div class="ic ic-b"><div class="ico">🌿</div><h4>Plate Method</h4><p>Fill ½ plate with non-starchy veg, ¼ with lean protein, ¼ with complex carbs. Naturally limits carb intake and simplifies carb counting at each meal.</p></div>
+      <div class="ic ic-a"><div class="ico">⏱️</div><h4>Consistent Meal Timing</h4><p>Eating at consistent times daily helps stabilise basal-bolus rhythms. Irregular meal timing is one of the most common causes of unpredictable BG patterns.</p></div>
+      <div class="ic ic-p"><div class="ico">🫘</div><h4>High Fibre Choices</h4><p>Soluble fiber (oats, beans, lentils) slows glucose absorption. Aim for 25–35g of fiber daily. High-fiber meals may require less bolus or later injection timing.</p></div>
+      <div class="ic ic-c"><div class="ico">🚫</div><h4>Foods to Limit</h4><p>Sugary drinks, white bread, white rice, processed snacks, and alcohol cause rapid BG spikes. Alcohol can also cause delayed hypoglycemia up to 12–24 hrs after drinking.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🍺 Alcohol & Blood Glucose — Important Guide</div>
+    <div class="notice nd">⚠️ <strong>Alcohol Warning:</strong> Alcohol blocks gluconeogenesis (liver's ability to release glucose). This can cause severe delayed hypoglycemia 4–12 hours after drinking. Never drink on an empty stomach.</div>
+    <div class="g2" style="margin-top:.9rem">
+      <div>
+        <div style="font-weight:600;font-size:.84rem;margin-bottom:.5rem;color:var(--red)">⚠️ Risks</div>
+        <ul style="padding-left:1.1rem;font-size:.79rem;color:var(--muted);line-height:2">
+          <li>Masks hypoglycemia symptoms</li>
+          <li>Inhibits liver glucose release</li>
+          <li>Impairs judgement for dosing</li>
+          <li>Dehydration worsens glucose control</li>
+          <li>Some drinks are very high in carbs</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight:600;font-size:.84rem;margin-bottom:.5rem;color:var(--green)">✅ Safer Strategies</div>
+        <ul style="padding-left:1.1rem;font-size:.79rem;color:var(--muted);line-height:2">
+          <li>Always eat before/during drinking</li>
+          <li>Reduce or skip your bolus for mixed drinks</li>
+          <li>Set overnight CGM alarm to 90 mg/dL</li>
+          <li>Wear medical ID alert</li>
+          <li>Inform a trusted person about your T1D</li>
+          <li>Check BG before bed; eat complex carbs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     9. SICK DAY PROTOCOL
+══════════════════════════════════ -->
+<section id="sickday">
+  <div class="section-title">🤒 Sick Day Protocol</div>
+  <div class="section-sub">Illness raises blood glucose and increases DKA risk even if you can't eat. <strong>Never stop insulin when sick.</strong></div>
+  <div class="card">
+    <div class="card-title">📋 Step-by-Step Sick Day Rules</div>
+    <div class="sick-step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>Never Stop Insulin</h4><p>Continue all insulin — even if you can't eat. Illness hormones (cortisol, glucagon) raise BG. You may actually need more insulin, not less.</p></div>
+    </div>
+    <div class="sick-step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>Check BG Every 2–4 Hours</h4><p>Monitor more frequently than normal. Check for patterns. If consistently &gt;250 mg/dL despite corrections, check ketones immediately.</p></div>
+    </div>
+    <div class="sick-step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>Check Ketones</h4><p>Check urine or blood ketones every 4 hours if BG &gt;250 mg/dL. Blood ketone meters are more accurate. Moderate/large ketones = call your doctor or go to ER.</p></div>
+    </div>
+    <div class="sick-step">
+      <div class="step-num">4</div>
+      <div class="step-body"><h4>Stay Hydrated</h4><p>Drink 8+ oz of fluid every hour. If unable to eat, drink sugar-containing fluids (juice, ginger ale, sports drinks) to prevent hypoglycemia. Avoid regular sodas in excess.</p></div>
+    </div>
+    <div class="sick-step">
+      <div class="step-num">5</div>
+      <div class="step-body"><h4>Follow Sick-Day Carb Targets</h4><p>If you can't keep food down, aim for 15–50g carbs every 3–4 hours. Choose easy foods: broth, crackers, popsicles, toast, apple juice.</p></div>
+    </div>
+    <div class="sick-step">
+      <div class="step-num">6</div>
+      <div class="step-body"><h4>When to Call Your Doctor</h4><p>Call if: BG &gt;300 mg/dL for more than 2 readings; moderate/large ketones; vomiting &gt;2 times; unable to keep fluids down; severe abdominal pain; confusion or extreme fatigue.</p></div>
+    </div>
+    <div class="notice nd" style="margin-top:.5rem">🚨 <strong>Go to the ER immediately</strong> if you have vomiting + ketones + BG &gt;250 mg/dL. This is a DKA emergency.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌡️ Ketone Level Guide</div>
+    <div style="overflow-x:auto">
+    <table class="cmp-tbl">
+      <thead><tr><th>Urine Ketones</th><th>Blood Ketones (mmol/L)</th><th>Risk Level</th><th>Action Required</th></tr></thead>
+      <tbody>
+        <tr><td>Negative / Trace</td><td>&lt;0.6</td><td><span class="badge s-ok">Normal</span></td><td>Continue monitoring. Drink fluids.</td></tr>
+        <tr><td>Small (1+)</td><td>0.6–1.0</td><td><span class="badge s-hi">Caution</span></td><td>Increase insulin. Drink extra fluids. Re-check in 2 hrs.</td></tr>
+        <tr><td>Moderate (2+)</td><td>1.0–3.0</td><td><span class="badge s-vhi">Danger</span></td><td>Give correction dose. Drink fluids. Call your doctor.</td></tr>
+        <tr><td>Large (3+/4+)</td><td>&gt;3.0</td><td><span class="badge" style="background:#7f1d1d;color:#fff">Emergency</span></td><td>Go to ER immediately. DKA treatment needed.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🛒 Sick Day Pantry Essentials</div>
+    <div class="g4">
+      <div class="ic ic-b"><div class="ico">🍵</div><h4>Broths & Soups</h4><p>Chicken or vegetable broth. Easy on stomach, provides sodium and fluids.</p></div>
+      <div class="ic ic-g"><div class="ico">🍎</div><h4>Apple Juice</h4><p>Fast-acting carbs if BG drops. 4 oz = ~15g carbs.</p></div>
+      <div class="ic ic-a"><div class="ico">🧃</div><h4>Sports Drinks</h4><p>Pedialyte or Gatorade for electrolytes and light carbs.</p></div>
+      <div class="ic ic-t"><div class="ico">🍪</div><h4>Crackers & Toast</h4><p>Plain crackers or toast for small amounts of carbs when appetite is low.</p></div>
+      <div class="ic ic-p"><div class="ico">🍦</div><h4>Popsicles / Jello</h4><p>Easy to consume, provides fluids and small carb amounts.</p></div>
+      <div class="ic ic-c"><div class="ico">💊</div><h4>Glucose Tablets</h4><p>Always have on hand. 4g carbs each; predictable and fast-acting.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     10. COMPLICATIONS & SCREENINGS
+══════════════════════════════════ -->
+<section id="complications">
+  <div class="section-title">🔬 Complications & Screening Schedule</div>
+  <div class="section-sub">Regular screenings catch complications early, when they're most treatable. Use this as a reference for your annual care plan.</div>
+  <div class="card">
+    <div class="card-title">📅 Recommended Screening Schedule</div>
+    <div class="comp-row">
+      <div class="comp-icon">👁️</div>
+      <div class="comp-info">
+        <h4>Diabetic Retinopathy — Eye Exam</h4>
+        <p>Dilated retinal exam to detect retinopathy, macular oedema, or other changes. Early detection prevents vision loss.</p>
+      </div>
+      <span class="cs cs-w">Annually</span>
+    </div>
+    <div class="comp-row">
+      <div class="comp-icon">🫁</div>
+      <div class="comp-info">
+        <h4>Nephropathy — Kidney Function</h4>
+        <p>Urine albumin-to-creatinine ratio + eGFR. Microalbuminuria is the earliest sign of diabetic kidney disease.</p>
+      </div>
+      <span class="cs cs-w">Annually</span>
+    </div>
+    <div class="comp-row">
+      <div class="comp-icon">🦶</div>
+      <div class="comp-info">
+        <h4>Neuropathy — Foot Examination</h4>
+        <p>Comprehensive foot exam including vibration, monofilament testing, and vascular assessment. Daily self-inspection of feet.</p>
+      </div>
+      <span class="cs cs-w">Annually (or more)</span>
+    </div>
+    <div class="comp-row">
+      <div class="comp-icon">🫀</div>
+      <div class="comp-info">
+        <h4>Cardiovascular — Lipid Panel + BP</h4>
+        <p>Total cholesterol, LDL, HDL, triglycerides, blood pressure, and resting ECG. T1D is a major CV risk factor.</p>
+      </div>
+      <span class="cs cs-w">Annually</span>
+    </div>
+    <div class="comp-row">
+      <div class="comp-icon">🦋</div>
+      <div class="comp-info">
+        <h4>Thyroid — TSH Test</h4>
+        <p>Hashimoto's thyroiditis is 3× more common in T1D. Hypothyroidism worsens glucose control and cholesterol levels.</p>
+      </div>
+      <span class="cs cs-w">Every 1–2 years</span>
+    </div>
+    <div class="comp-row">
+      <div class="comp-icon">🩻</div>
+      <div class="comp-info">
+        <h4>Celiac Disease — tTG-IgA Antibodies</h4>
+        <p>Affects 5–10% of T1D patients. Undiagnosed celiac causes malabsorption and unpredictable BG patterns.</p>
+      </div>
+      <span class="cs cs-w">Every 2 years</span>
+    </div>
+    <div class="comp-row">
+      <div class="comp-icon">🦷</div>
+      <div class="comp-info">
+        <h4>Dental — Periodontal Check</h4>
+        <p>High glucose impairs immune response, increasing infection and periodontal disease risk. Gum disease also worsens glycaemic control.</p>
+      </div>
+      <span class="cs cs-w">Bi-annually</span>
+    </div>
+    <div class="comp-row">
+      <div class="comp-icon">🧠</div>
+      <div class="comp-info">
+        <h4>Mental Health Screening</h4>
+        <p>Depression affects 2–3× more T1D patients vs. general population. Diabetes distress and burnout screening are part of standard care.</p>
+      </div>
+      <span class="cs cs-g">Each visit</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 HbA1c Testing Schedule</div>
+    <div class="g2">
+      <div>
+        <div class="tl">
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Every 3 months</div><div class="tl-content">If not at target or if changing treatment regimen</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Every 6 months</div><div class="tl-content">If at target and on stable management plan</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Before pregnancy</div><div class="tl-content">A1C target &lt;6.5% recommended before conception. Monthly testing during pregnancy.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">After illness/major change</div><div class="tl-content">Test 4–6 weeks after any major illness, insulin change, or life event affecting control</div></div>
+        </div>
+      </div>
+      <div class="notice ng" style="height:fit-content">
+        ✅ <strong>Beyond A1C:</strong> Time in Range (TIR) is increasingly preferred as a daily management metric. A1C can be misleading if you have frequent highs and lows that average to a "normal" number.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     11. DEVICES & TECHNOLOGY
+══════════════════════════════════ -->
+<section id="devices">
+  <div class="section-title">📱 Devices & Technology</div>
+  <div class="section-sub">Modern T1D management is transformed by continuous glucose monitors, insulin pumps, and closed-loop systems. Compare options below.</div>
+  <div class="card">
+    <div class="card-title">📡 Continuous Glucose Monitors (CGMs)</div>
+    <div class="g3">
+      <div class="dev-card"><div class="dc-type">CGM</div><h4>Dexcom G7</h4><p>Wear time 10 days. 60-second warm-up. Direct phone connectivity. No fingerstick calibration. High accuracy (MARD ~8.2%).</p><span class="dc-tag" style="background:var(--teal-p);color:var(--teal)">Real-time</span></div>
+      <div class="dev-card"><div class="dc-type">CGM</div><h4>FreeStyle Libre 3</h4><p>Wear time 14 days. Smallest sensor available. Continuous readings to phone. No fingerstick calibration required.</p><span class="dc-tag" style="background:var(--blue-p);color:var(--blue)">Flash CGM</span></div>
+      <div class="dev-card"><div class="dc-type">CGM</div><h4>Medtronic Guardian 4</h4><p>Works with Medtronic 780G closed-loop pump. 7-day wear. Calibration-free when used with compatible pump.</p><span class="dc-tag" style="background:var(--purple-p);color:var(--purple)">Integrated</span></div>
+      <div class="dev-card"><div class="dc-type">CGM</div><h4>Eversense E3</h4><p>Implantable sensor worn for 180 days. Requires professional insertion. Vibrates on wrist when glucose is out of range.</p><span class="dc-tag" style="background:var(--green-p);color:var(--green)">Implantable</span></div>
+      <div class="dev-card"><div class="dc-type">CGM</div><h4>Libre 2 (India)</h4><p>Available widely in India. 14-day wear. Requires scanning (Libre 2 does not push alerts by default). Cost-effective option.</p><span class="dc-tag" style="background:var(--amber-p);color:#c17d00">Affordable</span></div>
+      <div class="dev-card"><div class="dc-type">BGM</div><h4>Glucometer (BGM)</h4><p>Traditional fingerstick glucose monitor. Less expensive. Accurate point-in-time measurement. Good backup to CGM.</p><span class="dc-tag" style="background:var(--bg);color:var(--muted);border:1px solid var(--border)">Backup</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">⚙️ Insulin Delivery Systems</div>
+    <div class="g3">
+      <div class="dev-card"><div class="dc-type">Closed-Loop APS</div><h4>Medtronic MiniMed 780G</h4><p>Auto-adjusts basal insulin + automatic correction boluses. Guardian 4 CGM integration. Aim: 70% TIR with minimal input.</p><span class="dc-tag" style="background:var(--green-p);color:var(--green)">Hybrid Closed-Loop</span></div>
+      <div class="dev-card"><div class="dc-type">Closed-Loop APS</div><h4>Tandem t:slim X2 + Control-IQ</h4><p>Predictive low-glucose suspend + auto correction boluses. Dexcom G6 integration. Can be updated via software download.</p><span class="dc-tag" style="background:var(--green-p);color:var(--green)">Hybrid Closed-Loop</span></div>
+      <div class="dev-card"><div class="dc-type">Closed-Loop APS</div><h4>Omnipod 5</h4><p>Tubeless, waterproof patch pump. Works with Dexcom G6 CGM. Automated insulin delivery. SmartAdjust technology.</p><span class="dc-tag" style="background:var(--teal-p);color:var(--teal)">Tubeless AID</span></div>
+      <div class="dev-card"><div class="dc-type">Open-Source APS</div><h4>Loop (iOS) / AAPS (Android)</h4><p>DIY closed-loop systems. Requires compatible CGM + pump. Large community support. Very flexible but requires technical setup.</p><span class="dc-tag" style="background:var(--amber-p);color:#c17d00">Open-Source</span></div>
+      <div class="dev-card"><div class="dc-type">Smart Pen</div><h4>InPen / NovoPen 6</h4><p>Connected insulin pens that track doses via app. Dose reminders, bolus calculator, logbook. Bridge between MDI and pump therapy.</p><span class="dc-tag" style="background:var(--blue-p);color:var(--blue)">Smart MDI</span></div>
+      <div class="dev-card"><div class="dc-type">Glucagon Kit</div><h4>Baqsimi / Gvoke</h4><p>Nasal powder (Baqsimi) or auto-injector (Gvoke) glucagon kits for severe hypoglycemia. Easier for bystanders to use than traditional kits.</p><span class="dc-tag" style="background:var(--coral-p);color:var(--coral)">Emergency</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     12. MENTAL HEALTH
+══════════════════════════════════ -->
+<section id="mental">
+  <div class="section-title">🧠 Mental Health & Diabetes Distress</div>
+  <div class="section-sub">Living with T1D is a 24/7 demanding condition. Mental health is an essential — not optional — part of diabetes care.</div>
+  <div class="card">
+    <div class="card-title">📋 Diabetes Distress Screener (DDS-4)</div>
+    <p style="font-size:.81rem;color:var(--muted);margin-bottom:1rem">Rate each item from 1 (no problem) to 6 (a serious problem) over the past month.</p>
+    <div id="ddsQuestions"></div>
+    <button class="btn bp bfull" onclick="calcDDS()">Assess My Distress Level</button>
+    <div id="ddsResult" style="display:none;margin-top:.9rem;padding:1rem;border-radius:12px;border:2px solid var(--border)"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">💬 Common Psychological Challenges in T1D</div>
+    <div class="g3">
+      <div class="ic ic-a"><div class="ico">😓</div><h4>Diabetes Distress</h4><p>Emotional burden specific to managing diabetes — fear of complications, burnout, frustration with glucose variability. Affects 40–50% of T1D patients.</p></div>
+      <div class="ic ic-c"><div class="ico">😰</div><h4>Hypoglycemia Fear</h4><p>Excessive anxiety about low glucose leads some to run BG high deliberately. A specific fear that needs targeted cognitive therapy — not just reassurance.</p></div>
+      <div class="ic ic-p"><div class="ico">😞</div><h4>Depression</h4><p>Depression is 2–3× more common in T1D. Worsens self-care and glucose control. Screening with PHQ-9 at every visit is recommended by ADA.</p></div>
+      <div class="ic ic-b"><div class="ico">🍽️</div><h4>Disordered Eating</h4><p>"Diabulimia" (deliberate insulin omission for weight loss) is a serious but underrecognised issue in T1D, especially in young women. Requires specialist care.</p></div>
+      <div class="ic ic-t"><div class="ico">🔥</div><h4>Burnout</h4><p>Feeling overwhelmed and disengaged from diabetes management. Common after years of intensive management. Talking to a diabetes educator or psychologist helps.</p></div>
+      <div class="ic ic-g"><div class="ico">💪</div><h4>Building Resilience</h4><p>Peer support groups, acceptance-based therapy, CGM data review, and realistic goal-setting are proven strategies for long-term psychological wellbeing in T1D.</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌿 Coping Strategies & Self-Care</div>
+    <div class="g2">
+      <div>
+        <div style="font-weight:600;font-size:.84rem;margin-bottom:.7rem">Evidence-Based Strategies</div>
+        <div class="tl">
+          <div class="tl-item"><div class="tl-dot" style="background:var(--green)"></div><div class="tl-content"><strong>Problem-solving therapy</strong> — breaking management challenges into small, solvable steps</div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--teal)"></div><div class="tl-content"><strong>Mindfulness-based stress reduction</strong> — reduces cortisol which directly raises blood glucose</div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--purple)"></div><div class="tl-content"><strong>Peer support groups</strong> — JDRF, Beyond Type 1, and online communities offer connection and practical advice</div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--blue)"></div><div class="tl-content"><strong>Regular exercise</strong> — proven antidepressant; improves insulin sensitivity and mood simultaneously</div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--amber)"></div><div class="tl-content"><strong>Scheduled "diabetes holidays"</strong> — brief planned breaks from data obsession (not from insulin) under guidance</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="notice ng" style="margin-bottom:.8rem">
+          🗣️ <strong>Ask your doctor for a referral</strong> to a diabetes-specialised psychologist or social worker. Mental health support is part of standard T1D care, not a "last resort."
+        </div>
+        <div style="background:var(--purple-p);border-radius:12px;padding:.95rem">
+          <div style="font-weight:700;font-size:.84rem;color:var(--purple);margin-bottom:.45rem">📞 Crisis &amp; Support Resources</div>
+          <div style="font-size:.77rem;color:var(--muted);line-height:2">
+            <strong>iCall (India):</strong> 9152987821<br>
+            <strong>Vandrevala Foundation:</strong> 1860-2662-345 (24/7)<br>
+            <strong>JDRF:</strong> jdrf.org/resources<br>
+            <strong>Beyond Type 1:</strong> beyondtype1.org<br>
+            <strong>Diabetes Hands Foundation:</strong> diabeteshandsfoundation.org
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     13. TRAVEL GUIDE
+══════════════════════════════════ -->
+<section id="travel">
+  <div class="section-title">✈️ Travel with T1D</div>
+  <div class="section-sub">Travel requires advance preparation. With the right plan, T1D should never stop you from exploring the world.</div>
+  <div class="card">
+    <div class="card-title">🎒 Pre-Travel Preparation Checklist</div>
+    <div class="travel-tip"><div class="tt-icon">📋</div><div><strong>Medical Documentation:</strong> Carry a letter from your endocrinologist listing all medications, devices, and your diagnosis. Get it translated if travelling abroad. This is essential for airport security and customs.</div></div>
+    <div class="travel-tip"><div class="tt-icon">💊</div><div><strong>Double Your Supplies:</strong> Pack 2× your usual insulin, syringes/pen needles, CGM sensors, pump supplies, and lancets. Split between carry-on and checked luggage. Never check all insulin — it can freeze in cargo.</div></div>
+    <div class="travel-tip"><div class="tt-icon">❄️</div><div><strong>Insulin Storage:</strong> Use an insulated travel case (FRIO wallet, Medicool). Opened insulin stays viable at room temperature up to 28–30 days. Unopened vials must be refrigerated (2–8°C). Never let insulin freeze or overheat (&gt;37°C).</div></div>
+    <div class="travel-tip"><div class="tt-icon">🛂</div><div><strong>Airport Security:</strong> Inform TSA/security about your diabetes supplies. Insulin pens, pumps, CGMs, and lancets are allowed through security. Request hand-inspection instead of X-ray for insulin pumps if needed. Keep all supplies in original packaging if possible.</div></div>
+    <div class="travel-tip"><div class="tt-icon">🌍</div><div><strong>Time Zone Changes:</strong> For flights crossing multiple time zones, adjust long-acting insulin doses with your endocrinologist's guidance. On pump therapy, update time zone settings only after arriving at destination. Check BG frequently during and after travel.</div></div>
+    <div class="travel-tip"><div class="tt-icon">🍽️</div><div><strong>Unfamiliar Foods:</strong> When eating unknown foods, wait and watch — bolus conservatively, check BG 1 and 2 hrs after the meal, and adjust for future similar meals. Learn carb counts for common local dishes in advance.</div></div>
+    <div class="travel-tip"><div class="tt-icon">🏖️</div><div><strong>Heat & Humidity:</strong> High temperatures reduce insulin absorption speed and can degrade insulin faster. Check BG more frequently at the beach or in hot climates. Keep insulin cool and out of direct sunlight.</div></div>
+    <div class="travel-tip"><div class="tt-icon">🆘</div><div><strong>Emergency Contacts:</strong> Save your endocrinologist's number. Research the nearest hospital or diabetes clinic at your destination. Know how to say "I have Type 1 Diabetes" and "I need sugar" in the local language.</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📦 T1D Travel Kit Essentials</div>
+    <div class="g4">
+      <div class="ic ic-t"><div class="ico">💉</div><h4>Insulin (2× supply)</h4><p>Rapid + long-acting. Backup pens + vials.</p></div>
+      <div class="ic ic-g"><div class="ico">📡</div><h4>CGM Sensors (extra)</h4><p>Extra sensors + transmitter + backup BGM.</p></div>
+      <div class="ic ic-a"><div class="ico">🍬</div><h4>Fast-Acting Carbs</h4><p>Glucose tabs, juice boxes, gels in every bag.</p></div>
+      <div class="ic ic-b"><div class="ico">📄</div><h4>Medical Letter</h4><p>Doctor letter + prescription list + ID.</p></div>
+      <div class="ic ic-p"><div class="ico">❄️</div><h4>FRIO Insulin Wallet</h4><p>Keeps insulin cool without refrigeration for 45+ hrs.</p></div>
+      <div class="ic ic-c"><div class="ico">🦺</div><h4>Medical Alert ID</h4><p>Bracelet or card stating T1D + emergency contact.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     14. LEARN + QUIZ
+══════════════════════════════════ -->
+<section id="learn">
+  <div class="section-title">📚 Learn & Test Your Knowledge</div>
+  <div class="section-sub">Understanding your condition deeply improves outcomes. Test your T1D knowledge with our interactive quiz.</div>
+  <div class="card">
+    <div class="card-title">🎓 T1D Knowledge Quiz</div>
+    <div id="quizContainer"></div>
+    <div style="margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap">
+      <button class="btn bp" onclick="nextQuestion()">Next Question →</button>
+      <button class="btn bg" onclick="resetQuiz()">🔄 Restart Quiz</button>
+    </div>
+    <div id="quizScore" style="display:none;margin-top:.8rem;padding:.8rem;background:var(--green-p);border-radius:10px;font-size:.82rem;font-weight:600;color:var(--green)"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">❓ Frequently Asked Questions</div>
+    <div id="faqList"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📰 Key T1D Facts & Research Milestones</div>
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">1922</div><div class="tl-content">First insulin injection given to Leonard Thompson, saving his life — the dawn of modern diabetes treatment</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">1978</div><div class="tl-content">First biosynthetic human insulin produced using recombinant DNA technology</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">1986</div><div class="tl-content">First insulin pen (NovoPen) introduced, transforming ease of injection</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">1993</div><div class="tl-content">DCCT trial proves intensive glucose control reduces complications by 50–75%</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">1999</div><div class="tl-content">First CGM (Minimed) approved — beginning of continuous glucose monitoring era</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2006</div><div class="tl-content">First modern insulin pump with CGM integration enables "sensor-augmented" therapy</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2019</div><div class="tl-content">First hybrid closed-loop "artificial pancreas" system commercially available</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2022</div><div class="tl-content">Teplizumab (Tzield) approved — first drug to delay T1D onset in at-risk individuals by ~2 years</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2023+</div><div class="tl-content">Cell therapy, stem cell research, beta cell encapsulation, and ultra-fast insulins continue to advance toward a biological cure</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     15. RESOURCES
+══════════════════════════════════ -->
+<section id="resources">
+  <div class="section-title">🌐 Resources & Support</div>
+  <div class="section-sub">Connect with leading T1D organisations, patient communities, apps, and research initiatives.</div>
+  <div class="card">
+    <div class="card-title">🏥 Organisations & Patient Support</div>
+    <div class="g3">
+      <a class="res-card" href="https://www.jdrf.org" target="_blank" rel="noopener"><div class="res-icon">🔵</div><div><strong>JDRF</strong><br><span style="font-size:.75rem;color:var(--muted)">Largest T1D research funder globally. Research news, advocacy, and community tools.</span></div></a>
+      <a class="res-card" href="https://beyondtype1.org" target="_blank" rel="noopener"><div class="res-icon">💙</div><div><strong>Beyond Type 1</strong><br><span style="font-size:.75rem;color:var(--muted)">Peer community, apps, advocacy. Free peer mentor programme for newly diagnosed.</span></div></a>
+      <a class="res-card" href="https://www.diabetes.org" target="_blank" rel="noopener"><div class="res-icon">🔴</div><div><strong>American Diabetes Association</strong><br><span style="font-size:.75rem;color:var(--muted)">Standards of medical care, research, patient education materials, nutrition guides.</span></div></a>
+      <a class="res-card" href="https://www.diabetesindia.com" target="_blank" rel="noopener"><div class="res-icon">🇮🇳</div><div><strong>Diabetes India</strong><br><span style="font-size:.75html;color:var(--muted)">India-specific resources, RSSDI guidelines, doctor finder, and patient communities.</span></div></a>
+      <a class="res-card" href="https://t1international.com" target="_blank" rel="noopener"><div class="res-icon">🌍</div><div><strong>T1 International</strong><br><span style="font-size:.75rem;color:var(--muted)">Advocates for insulin access worldwide. Critical resources for T1D in developing countries.</span></div></a>
+      <a class="res-card" href="https://www.idf.org" target="_blank" rel="noopener"><div class="res-icon">🌐</div><div><strong>IDF (International Diabetes Federation)</strong><br><span style="font-size:.75rem;color:var(--muted)">Global diabetes atlas, policy reports, and country-by-country resources.</span></div></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📱 Recommended Apps & Tools</div>
+    <div class="g3">
+      <div class="ic ic-t"><div class="ico">📊</div><h4>Sugarmate / Gluroo</h4><p>CGM data aggregation, trends, predictions, and nightscout integration. Excellent for caregivers and family viewing.</p></div>
+      <div class="ic ic-b"><div class="ico">🍽️</div><h4>Carb Manager / Cronometer</h4><p>Detailed carb counting with a large food database. Excellent for meal planning and identifying hidden carbs in recipes.</p></div>
+      <div class="ic ic-g"><div class="ico">💉</div><h4>RapidCalc / InPen App</h4><p>Advanced bolus calculators for MDI users. Tracks IOB, logs doses, and provides personalised suggestions based on patterns.</p></div>
+      <div class="ic ic-p"><div class="ico">🏃</div><h4>Supersapiens</h4><p>CGM app designed for athletes. Analyses how exercise, food, and stress affect energy levels and performance.</p></div>
+      <div class="ic ic-a"><div class="ico">😴</div><h4>Nightscout</h4><p>Open-source remote CGM monitoring. Allows parents, caregivers to watch glucose remotely. Free to self-host.</p></div>
+      <div class="ic ic-c"><div class="ico">📓</div><h4>Diabetes:M / mySugr</h4><p>Full-featured diabetes logbooks with A1C estimation, pattern analysis, and doctor report generation.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     16. EMERGENCY
+══════════════════════════════════ -->
+<section id="emergency">
+  <div class="em-card">
+    <h3>🚨 Emergency Quick Reference</h3>
+    <div class="em-grid">
+      <div class="em-block">
+        <h4>HYPOGLYCEMIA — BG &lt; 70 mg/dL</h4>
+        <ul>
+          <li>Eat <strong>15g fast carbs</strong> immediately</li>
+          <li>Wait 15 minutes — recheck BG</li>
+          <li>Repeat if still &lt;70 mg/dL</li>
+          <li>Eat a snack once BG &gt;100 mg/dL</li>
+          <li>If unconscious: Glucagon injection</li>
+          <li>Call 112 / 911 if unresponsive</li>
+        </ul>
+        <div class="em-num">🍬 15g = 4 glucose tabs · 4 oz juice · 6 crackers · 1 tbsp honey</div>
+      </div>
+      <div class="em-block">
+        <h4>HYPERGLYCEMIA / DKA WARNING SIGNS</h4>
+        <ul>
+          <li>BG persistently &gt;250 mg/dL</li>
+          <li>Moderate or large ketones (urine/blood)</li>
+          <li>Nausea, vomiting, abdominal pain</li>
+          <li>Fruity-smelling breath</li>
+          <li>Rapid or laboured breathing</li>
+          <li>Extreme fatigue or confusion</li>
+          <li>Excessive thirst &amp; urination</li>
+        </ul>
+        <div class="em-num">📞 Go to ER immediately — DKA is life-threatening</div>
+      </div>
+      <div class="em-block">
+        <h4>SEVERE HYPOGLYCEMIA RESPONSE</h4>
+        <ul>
+          <li>Do NOT give food/drink if unconscious</li>
+          <li>Inject Glucagon (kit or Baqsimi nasal)</li>
+          <li>Turn person on their side</li>
+          <li>Call emergency services</li>
+          <li>Stay until help arrives</li>
+        </ul>
+        <div class="em-num">💉 Gvoke autoinjector: 0.5mg (&lt;45kg) or 1mg (≥45kg)</div>
+      </div>
+      <div class="em-block">
+        <h4>EMERGENCY NUMBERS (INDIA)</h4>
+        <ul>
+          <li>Emergency: <strong>112</strong></li>
+          <li>Ambulance: <strong>102 / 108</strong></li>
+          <li>Vandrevala (mental health): <strong>1860-2662-345</strong></li>
+          <li>iCall: <strong>9152987821</strong></li>
+        </ul>
+        <div class="em-num">🆔 Always wear a medical ID bracelet or carry a T1D card</div>
+      </div>
+    </div>
+    <div class="em-band">
+      <strong>⚠️ Important:</strong> Never stop insulin during illness or DKA. Sick-day rules apply even when not eating — stress hormones raise BG significantly. Keep glucagon and fast-acting carbs accessible at all times. Inform family, friends, and coworkers about your T1D and what to do in an emergency.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="#tracker" onclick="navTo(event,'tracker')">Glucose</a>
+    <a href="#carbs" onclick="navTo(event,'carbs')">Carbs</a>
+    <a href="#insulin" onclick="navTo(event,'insulin')">Insulin</a>
+    <a href="#exercise" onclick="navTo(event,'exercise')">Exercise</a>
+    <a href="#sickday" onclick="navTo(event,'sickday')">Sick Day</a>
+    <a href="#emergency" onclick="navTo(event,'emergency')">Emergency</a>
+    <a href="https://www.diabetes.org" target="_blank" rel="noopener">ADA Guidelines</a>
+    <a href="https://jdrf.org" target="_blank" rel="noopener">JDRF</a>
+  </div>
+  <p>Beat Diabetes — T1D Companion &nbsp;·&nbsp; <strong>Educational tool only — not a substitute for medical advice</strong> &nbsp;·&nbsp; Always consult your diabetes care team</p>
+  <p style="margin-top:.3rem;font-size:.69rem;opacity:.7">Built with ❤️ for the T1D community · Based on ADA 2024 Standards of Care</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════
+function navTo(e, id) {
+  e.preventDefault();
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setActiveNav(id);
+}
+function setActiveNav(id) {
+  document.querySelectorAll('.nav-scroll a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+  });
+}
+const NAV_SECTIONS = ['tracker','carbs','insulin','a1c','exercise','medications','checklist','nutrition','sickday','complications','devices','mental','travel','learn','resources','emergency'];
+window.addEventListener('scroll', () => {
+  const navH = document.querySelector('nav').offsetHeight + 20;
+  let cur = NAV_SECTIONS[0];
+  NAV_SECTIONS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= navH + 10) cur = id;
+  });
+  setActiveNav(cur);
+}, { passive: true });
+
+// ═══════════════════════════════════════
+// GLUCOSE TRACKER
+// ═══════════════════════════════════════
+let glucoseLog = [];
+const CTX_LABELS = { fasting:'Fasting', post:'Post-meal', bedtime:'Bedtime', night:'Night', exercise:'Post-exercise', sick:'Sick day', other:'Other' };
+
+function getStatus(v) {
+  if (v < 70)  return { label:'LOW',       cls:'s-low', col:'#e85d3a' };
+  if (v <= 180) return { label:'IN RANGE',  cls:'s-ok',  col:'#3aab6b' };
+  if (v <= 250) return { label:'HIGH',      cls:'s-hi',  col:'#f5a623' };
+  return              { label:'VERY HIGH',  cls:'s-vhi', col:'#d93030' };
+}
+
+function updateGauge(val) {
+  const pct = Math.min(1, Math.max(0, (val - 40) / 360));
+  const total = 232;
+  document.getElementById('gaugeArc').style.strokeDashoffset = total - pct * total;
+  const angle = -90 + pct * 180;
+  document.getElementById('gaugeNeedle').setAttribute('transform', `rotate(${angle},87,98)`);
+  document.getElementById('gaugeVal').textContent = val;
+  const s = getStatus(val);
+  const el = document.getElementById('glucoseStatus');
+  el.textContent = s.label; el.className = 'gluc-st ' + s.cls;
+}
+
+function logGlucose() {
+  const val = parseInt(document.getElementById('bgInput').value);
+  if (!val || val < 20 || val > 600) { alert('Enter a valid BG value (20–600 mg/dL).'); return; }
+  const ctx = document.getElementById('mealCtx').value;
+  const mood = document.getElementById('moodCtx').value;
+  const notes = document.getElementById('bgNotes').value;
+  glucoseLog.push({ val, ctx, mood, notes, time: new Date() });
+  updateGauge(val);
+  updateStats();
+  renderLog();
+  drawChart();
+  document.getElementById('bgInput').value = '';
+  document.getElementById('bgNotes').value = '';
+}
+
+function updateStats() {
+  if (!glucoseLog.length) return;
+  const vals = glucoseLog.map(e => e.val);
+  const avg = Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+  const inRange = vals.filter(v=>v>=70&&v<=180).length;
+  const mean = avg;
+  const sd = Math.sqrt(vals.reduce((a,b)=>a+(b-mean)**2,0)/vals.length);
+  const cv = mean > 0 ? Math.round(sd/mean*100) : 0;
+  document.getElementById('statAvg').textContent = avg;
+  document.getElementById('statLow').textContent = Math.min(...vals);
+  document.getElementById('statHigh').textContent = Math.max(...vals);
+  document.getElementById('statTIR').textContent = Math.round(inRange/vals.length*100)+'%';
+  document.getElementById('statCV').textContent = cv+'%';
+  document.getElementById('statCount').textContent = vals.length;
+}
+
+function renderLog() {
+  const wrap = document.getElementById('logWrap');
+  const tbody = document.getElementById('logBody');
+  if (!glucoseLog.length) { wrap.style.display='none'; return; }
+  wrap.style.display = 'block';
+  tbody.innerHTML = glucoseLog.slice().reverse().map(e => {
+    const s = getStatus(e.val);
+    return `<tr>
+      <td>${e.time.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</td>
+      <td><strong>${e.val}</strong></td>
+      <td>${CTX_LABELS[e.ctx]||e.ctx}</td>
+      <td>${e.mood||'—'}</td>
+      <td><span class="badge ${s.cls}">${s.label}</span></td>
+      <td style="font-size:.75rem;color:var(--muted)">${e.notes||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function clearLog() {
+  if (!glucoseLog.length || !confirm('Clear all readings?')) return;
+  glucoseLog = [];
+  renderLog();
+  drawChart();
+  ['statAvg','statLow','statHigh','statCount'].forEach(id=>document.getElementById(id).textContent='—');
+  document.getElementById('statTIR').textContent='—';
+  document.getElementById('statCV').textContent='—';
+  document.getElementById('statCount').textContent='0';
+  document.getElementById('gaugeVal').textContent='—';
+  document.getElementById('glucoseStatus').textContent='Enter a reading';
+  document.getElementById('glucoseStatus').className='gluc-st s-ok';
+}
+
+function drawChart() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 400, H = 175;
+  canvas.width = W; canvas.height = H;
+  ctx.clearRect(0,0,W,H);
+  const toY = v => H-10-((v-40)/360)*(H-20);
+  [70,100,140,180,250].forEach(g=>{
+    ctx.beginPath(); ctx.setLineDash([4,4]);
+    ctx.moveTo(0,toY(g)); ctx.lineTo(W,toY(g));
+    ctx.strokeStyle=g===70||g===180?'rgba(200,100,50,.25)':'rgba(0,0,0,.07)';
+    ctx.lineWidth=1; ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='rgba(0,0,0,.3)'; ctx.font='9px DM Sans';
+    ctx.fillText(g,4,toY(g)-3);
+  });
+  ctx.fillStyle='rgba(58,171,107,.07)';
+  ctx.fillRect(0,toY(180),W,toY(70)-toY(180));
+  if (glucoseLog.length < 2) {
+    ctx.fillStyle='rgba(0,0,0,.3)'; ctx.font='13px DM Sans'; ctx.textAlign='center';
+    ctx.fillText('Log at least 2 readings to see trend',W/2,H/2); ctx.textAlign='left'; return;
+  }
+  const pts = glucoseLog.map((e,i)=>({ x:(i/(glucoseLog.length-1))*W, y:toY(e.val) }));
+  const gr = ctx.createLinearGradient(0,0,0,H);
+  gr.addColorStop(0,'rgba(26,122,110,.25)'); gr.addColorStop(1,'rgba(26,122,110,0)');
+  ctx.beginPath(); ctx.moveTo(pts[0].x,H);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(pts[pts.length-1].x,H); ctx.fillStyle=gr; ctx.fill();
+  ctx.beginPath(); pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+  ctx.strokeStyle='#1a7a6e'; ctx.lineWidth=2.2; ctx.lineJoin='round'; ctx.stroke();
+  pts.forEach((p,i)=>{
+    const s=getStatus(glucoseLog[i].val);
+    ctx.beginPath(); ctx.arc(p.x,p.y,4.5,0,Math.PI*2);
+    ctx.fillStyle=s.col; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
+  });
+}
+window.addEventListener('resize', drawChart);
+
+// ═══════════════════════════════════════
+// CARB CALCULATOR
+// ═══════════════════════════════════════
+const FOODS = {
+  grains:[
+    {n:'White Rice',c:45,u:'1 cup cooked',gi:72},{n:'Brown Rice',c:38,u:'1 cup cooked',gi:50},
+    {n:'White Bread',c:13,u:'1 slice',gi:75},{n:'Whole Wheat Bread',c:12,u:'1 slice',gi:51},
+    {n:'Oatmeal (cooked)',c:27,u:'1 cup',gi:55},{n:'Pasta (al dente)',c:42,u:'1 cup',gi:41},
+    {n:'Flour Tortilla (10")',c:35,u:'1 piece',gi:30},{n:'Bagel',c:56,u:'1 whole',gi:72},
+    {n:'Cornflakes',c:28,u:'1 cup',gi:81},{n:'Quinoa',c:39,u:'1 cup cooked',gi:53},
+    {n:'Barley (cooked)',c:44,u:'1 cup',gi:28},{n:'Rye Bread',c:15,u:'1 slice',gi:58},
+  ],
+  fruits:[
+    {n:'Apple (med)',c:25,u:'1 fruit',gi:36},{n:'Banana (ripe)',c:27,u:'1 med',gi:62},
+    {n:'Orange (med)',c:18,u:'1 fruit',gi:43},{n:'Grapes',c:16,u:'½ cup',gi:59},
+    {n:'Mango',c:25,u:'½ cup',gi:51},{n:'Strawberries',c:12,u:'1 cup',gi:40},
+    {n:'Watermelon',c:11,u:'1 cup',gi:76},{n:'Pear (med)',c:27,u:'1 fruit',gi:38},
+    {n:'Blueberries',c:21,u:'1 cup',gi:53},{n:'Cherries',c:22,u:'1 cup',gi:63},
+    {n:'Dates (dried)',c:18,u:'2 dates',gi:42},{n:'Pineapple',c:20,u:'½ cup',gi:66},
+  ],
+  dairy:[
+    {n:'Whole Milk',c:12,u:'1 cup (240ml)',gi:31},{n:'Skim Milk',c:12,u:'1 cup',gi:32},
+    {n:'Plain Yogurt',c:17,u:'1 cup',gi:36},{n:'Flavored Yogurt',c:33,u:'1 cup',gi:51},
+    {n:'Greek Yogurt (plain)',c:9,u:'1 cup',gi:11},{n:'Ice Cream (vanilla)',c:29,u:'½ cup',gi:51},
+    {n:'Chocolate Milk',c:26,u:'1 cup',gi:34},{n:'Cottage Cheese',c:8,u:'½ cup',gi:10},
+  ],
+  veggies:[
+    {n:'Broccoli',c:6,u:'1 cup',gi:10},{n:'Carrot (raw)',c:12,u:'1 medium',gi:35},
+    {n:'Corn (sweet)',c:27,u:'1 cup',gi:52},{n:'Green Beans',c:7,u:'1 cup',gi:30},
+    {n:'Baked Potato',c:37,u:'1 medium',gi:85},{n:'Sweet Potato',c:27,u:'½ cup',gi:44},
+    {n:'Green Peas',c:21,u:'1 cup',gi:54},{n:'Tomato',c:7,u:'1 medium',gi:30},
+    {n:'Beetroot',c:13,u:'½ cup',gi:61},{n:'Pumpkin',c:12,u:'½ cup',gi:75},
+  ],
+  protein:[
+    {n:'Kidney Beans',c:40,u:'1 cup cooked',gi:24},{n:'Lentils',c:40,u:'1 cup cooked',gi:29},
+    {n:'Chickpeas',c:45,u:'1 cup cooked',gi:28},{n:'Black Beans',c:41,u:'1 cup cooked',gi:30},
+    {n:'Tofu',c:4,u:'100g',gi:15},{n:'Egg',c:0.6,u:'1 large',gi:0},
+    {n:'Chicken Breast',c:0,u:'100g cooked',gi:0},{n:'Soybean (edamame)',c:14,u:'½ cup',gi:18},
+  ],
+  snacks:[
+    {n:'Crackers (Ritz, 6)',c:17,u:'6 crackers',gi:68},{n:'Pretzels',c:23,u:'1 oz (28g)',gi:83},
+    {n:'Granola Bar',c:29,u:'1 bar (~47g)',gi:61},{n:'Potato Chips',c:15,u:'1 oz (28g)',gi:54},
+    {n:'Glucose Tablets',c:4,u:'1 tablet',gi:100},{n:'Rice Cakes',c:14,u:'2 cakes',gi:82},
+    {n:'Popcorn',c:31,u:'3 cups popped',gi:65},{n:'Protein Bar',c:22,u:'1 bar',gi:40},
+  ],
+  drinks:[
+    {n:'Apple Juice (4oz)',c:15,u:'4 fl oz / 120ml',gi:44},{n:'Orange Juice',c:26,u:'1 cup (240ml)',gi:52},
+    {n:'Sports Drink (8oz)',c:14,u:'8 fl oz',gi:78},{n:'Cola (12oz)',c:39,u:'355ml can',gi:63},
+    {n:'Skim Milk',c:12,u:'1 cup',gi:32},{n:'Chocolate Milk',c:26,u:'1 cup',gi:34},
+    {n:'Coconut Water',c:9,u:'1 cup',gi:54},{n:'Green Tea (unsweetened)',c:0,u:'1 cup',gi:0},
+  ],
+  fastfood:[
+    {n:"McDonald's Big Mac",c:46,u:'1 burger',gi:65},{n:"McDonald's Fries (Med)",c:44,u:'1 serving',gi:73},
+    {n:'Pizza Slice (cheese)',c:36,u:'1 slice (~107g)',gi:60},{n:"Subway 6" (wheat)",c:46,u:'1 sub',gi:62},
+    {n:'Burger King Whopper',c:50,u:'1 burger',gi:65},{n:'KFC Biscuit',c:23,u:'1 piece',gi:70},
+    {n:'Pancake (plain)',c:28,u:'1 medium',gi:67},{n:'Donut (glazed)',c:23,u:'1 donut',gi:76},
+  ],
+  indian:[
+    {n:'Idli',c:30,u:'3 pieces',gi:60},{n:'Dosa (plain)',c:35,u:'1 dosa',gi:70},
+    {n:'Chapati / Roti',c:15,u:'1 medium (40g)',gi:62},{n:'Paratha (plain)',c:28,u:'1 medium',gi:65},
+    {n:'Basmati Rice',c:38,u:'1 cup cooked',gi:58},{n:'Dal (cooked)',c:28,u:'1 cup',gi:29},
+    {n:'Rajma (kidney beans)',c:40,u:'1 cup',gi:24},{n:'Poha',c:30,u:'1 cup',gi:60},
+    {n:'Upma',c:32,u:'1 cup',gi:55},{n:'Sambar',c:18,u:'1 cup',gi:30},
+    {n:'Puri',c:20,u:'1 puri (30g)',gi:70},{n:'Khichdi',c:35,u:'1 cup',gi:50},
+  ]
+};
+
+let foodQty = {};
+function buildFoodGrids() {
+  Object.entries(FOODS).forEach(([cat, list]) => {
+    const grid = document.getElementById('grid-'+cat);
+    if (!grid) return;
+    foodQty[cat] = foodQty[cat] || {};
+    grid.innerHTML = list.map((f,i) => {
+      foodQty[cat][i] = 0;
+      const giColor = f.gi < 55 ? 'var(--green)' : f.gi < 70 ? '#c17d00' : 'var(--red)';
+      return `<div class="fc" id="fc-${cat}-${i}">
+        <h4>${f.n}</h4>
+        <p>${f.u}</p>
+        <div class="fcc">${f.c}g carbs</div>
+        <div class="fgi" style="color:${giColor}">GI: ${f.gi||'—'}</div>
+        <div class="fq">
+          <button class="qb" onclick="chgQty('${cat}',${i},-1);event.stopPropagation()">−</button>
+          <span class="qc" id="qc-${cat}-${i}">0</span>
+          <button class="qb" onclick="chgQty('${cat}',${i},1);event.stopPropagation()">+</button>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+function chgQty(cat, idx, delta) {
+  foodQty[cat][idx] = Math.max(0, (foodQty[cat][idx]||0) + delta);
+  document.getElementById(`qc-${cat}-${idx}`).textContent = foodQty[cat][idx];
+  document.getElementById(`fc-${cat}-${idx}`)?.classList.toggle('sel', foodQty[cat][idx]>0);
+  updateCarbTotals();
+}
+
+function updateCarbTotals() {
+  let total=0, giSum=0, giCount=0;
+  Object.entries(FOODS).forEach(([cat,list]) => {
+    list.forEach((f,i)=>{
+      const qty = (foodQty[cat]||{})[i]||0;
+      total += qty * f.c;
+      if (qty>0 && f.gi>0) { giSum += f.gi; giCount++; }
+    });
+  });
+  document.getElementById('totalCarbs').textContent = total+'g';
+  document.getElementById('carbExchanges').textContent = (total/15).toFixed(1);
+  document.getElementById('carbGlucRise').textContent = '+'+Math.round(total*3);
+  document.getElementById('carbAvgGI').textContent = giCount ? Math.round(giSum/giCount) : '—';
+}
+
+function resetCarbs() {
+  Object.entries(FOODS).forEach(([cat,list])=>list.forEach((_,i)=>{ foodQty[cat][i]=0; const el=document.getElementById(`qc-${cat}-${i}`); if(el) el.textContent='0'; const fc=document.getElementById(`fc-${cat}-${i}`); if(fc) fc.classList.remove('sel'); }));
+  updateCarbTotals();
+}
+
+function switchTab(btn, panelId) {
+  btn.closest('.card').querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  btn.closest('.card').querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId)?.classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// INSULIN CALCULATOR
+// ═══════════════════════════════════════
+function calcInsulin() {
+  const bg=parseFloat(document.getElementById('iCurrentBG').value)||0;
+  const tgt=parseFloat(document.getElementById('iTargetBG').value)||100;
+  const cf=parseFloat(document.getElementById('iCF').value)||50;
+  const carbs=parseFloat(document.getElementById('iCarbs').value)||0;
+  const icr=parseFloat(document.getElementById('iICR').value)||15;
+  const iob=parseFloat(document.getElementById('iIOB').value)||0;
+  const pre=parseInt(document.getElementById('iPrebolus').value)||0;
+  const corr=(bg-tgt)/cf;
+  const carbDose=carbs/icr;
+  const total=Math.max(0,corr+carbDose-iob);
+  const res=document.getElementById('insulinResult');
+  res.classList.add('show');
+  document.getElementById('insulinDose').textContent=total.toFixed(1)+' u';
+  document.getElementById('insulinBreakdown').innerHTML=
+    `Carb dose: ${carbDose.toFixed(1)}u &nbsp;|&nbsp; Correction: ${corr.toFixed(1)}u &nbsp;|&nbsp; IOB deducted: ${iob.toFixed(1)}u`+
+    (pre>0?`<br>💡 Pre-bolus ${pre} min before eating`:'');
+}
+
+// ═══════════════════════════════════════
+// A1C ESTIMATOR
+// ═══════════════════════════════════════
+function calcA1C() {
+  const avg=parseFloat(document.getElementById('avgBG').value);
+  if (!avg||avg<60) { alert('Enter a valid average BG.'); return; }
+  const a1c=((avg+46.7)/28.7).toFixed(1);
+  const res=document.getElementById('a1cResult');
+  res.classList.add('show');
+  const v=parseFloat(a1c);
+  document.getElementById('a1cVal').textContent=a1c+'%';
+  let label,note,col;
+  if(v<6){label='Below Diabetic Range';col='var(--green)';note='Your estimated A1C is in the non-diabetic range. Excellent glucose management!'}
+  else if(v<7){label='At ADA Target ✓';col='var(--teal)';note='Within the ADA-recommended target of &lt;7% for most adults with T1D. Strong glucose control! Maintain current regimen.'}
+  else if(v<8){label='Slightly Above Target';col='var(--amber)';note='Just above the ADA target. Small improvements to consistency can bring this down. Discuss with your care team.'}
+  else if(v<10){label='Above Target — Action Needed';col='var(--coral)';note='This level increases risk of long-term complications. Prioritise a review with your endocrinologist to adjust your management plan.'}
+  else{label='High — Urgent Attention Required';col='var(--red)';note='This level significantly elevates complication risk. Please consult your diabetes care team as soon as possible for a management plan review.'}
+  const lbl=document.getElementById('a1cLabel');
+  lbl.textContent=label; lbl.style.color=col;
+  res.style.borderColor=col;
+  document.getElementById('a1cNote').innerHTML=note;
+  const pct=Math.min(100,Math.max(0,((v-5)/(13-5))*100));
+  document.getElementById('a1cMarker').style.left=pct+'%';
+}
+
+// ═══════════════════════════════════════
+// EXERCISE CALCULATOR
+// ═══════════════════════════════════════
+function calcExercise() {
+  const bg=parseFloat(document.getElementById('exBG').value);
+  const type=document.getElementById('exType').value;
+  const dur=parseInt(document.getElementById('exDur').value)||45;
+  const iob=parseFloat(document.getElementById('exIOB').value)||2;
+  if (!bg) { alert('Enter your current blood glucose.'); return; }
+  let status,advice,bg_color='#1a3a70';
+  if (bg<70){
+    status='⛔ Too Low — Do Not Exercise';
+    advice='Blood glucose is below 70 mg/dL. Treat hypoglycemia first: eat 15g fast-acting carbs, wait 15 min, recheck. Only exercise when BG &gt;100 mg/dL.';
+    bg_color='#7f1d1d';
+  } else if (bg<90){
+    status='⚠️ Borderline — Eat First';
+    advice=`BG is on the lower side. Eat 15–20g fast carbs before starting. Check BG every 20–30 min during ${type} exercise. Keep glucose tabs handy.`;
+    bg_color='#854d0e';
+  } else if (bg<=180){
+    const aerEffect=type==='aerobic'||type==='walk'||type==='sports';
+    const anaerEffect=type==='hiit'||type==='strength';
+    status='✅ Safe to Exercise';
+    if (aerEffect) advice=`Good pre-exercise range. For ${dur} min of ${type} activity, reduce basal by 50% if on pump. Consider 10–15g carbs if duration &gt;45 min. Recheck BG after.`;
+    else if (anaerEffect) advice=`Good range. ${type.charAt(0).toUpperCase()+type.slice(1)} may raise BG short-term due to adrenaline, then drop 2–4 hrs later. Watch for late-onset hypoglycemia this evening.`;
+    else advice='BG is in a good range for exercise. Stay hydrated and check BG before, halfway through, and after your session.';
+    bg_color='#1a5c40';
+  } else if (bg<=250){
+    status='⚠️ Elevated — Check Ketones First';
+    advice='BG is high. Check ketones before exercising. If ketones negative: light exercise may help lower BG. Drink extra water. If ketones positive: do NOT exercise; take correction dose and recheck.';
+    bg_color='#854d0e';
+  } else {
+    status='⛔ Too High — Do Not Exercise';
+    advice='BG above 250 mg/dL — check ketones immediately. If ketones present, do not exercise; DKA risk is elevated. Take a correction dose, drink fluids, and contact your care team if BG does not come down.';
+    bg_color='#7f1d1d';
+  }
+  const r=document.getElementById('exResult');
+  r.classList.add('show'); r.style.background=`linear-gradient(135deg,${bg_color},${bg_color}cc)`;
+  document.getElementById('exStatus').textContent=status;
+  document.getElementById('exAdvice').innerHTML=advice;
+}
+
+// ═══════════════════════════════════════
+// MEDICATIONS
+// ═══════════════════════════════════════
+let meds=[];
+const MED_COLORS={'insulin-basal':'var(--teal)','insulin-bolus':'var(--blue)','adjunct':'var(--purple)','thyroid':'var(--green)','celiac':'var(--amber)','other':'var(--muted)'};
+function addMed(){
+  const name=document.getElementById('medName').value.trim();
+  if (!name) { alert('Enter a medication name.'); return; }
+  meds.push({ name, dose:document.getElementById('medDose').value, type:document.getElementById('medType').value, notes:document.getElementById('medNotes').value });
+  renderMeds();
+  document.getElementById('medName').value=''; document.getElementById('medDose').value=''; document.getElementById('medNotes').value='';
+}
+function removeMed(i){ meds.splice(i,1); renderMeds(); }
+function renderMeds(){
+  const el=document.getElementById('medList');
+  if (!meds.length){ el.innerHTML='<div style="font-size:.8rem;color:var(--muted);padding:.8rem 0">No medications logged yet.</div>'; return; }
+  el.innerHTML=meds.map((m,i)=>`<div class="med-row">
+    <div class="med-dot" style="background:${MED_COLORS[m.type]||'var(--muted)'}"></div>
+    <div class="med-info"><h4>${m.name}${m.dose?' — '+m.dose:''}</h4><p>${m.notes||m.type}</p></div>
+    <button class="btn bg bsm" onclick="removeMed(${i})">✕</button>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// CHECKLIST
+// ═══════════════════════════════════════
+const CHECKS = {
+  morning:['Check fasting blood glucose','Take basal insulin (if morning dose)','Check CGM sensor/site','Review overnight trends','Eat breakfast with counted carbs','Pre-bolus 15–20 min before eating','Check insulin pump/pen battery/supply','Log any overnight low/high events'],
+  evening:['Check BG before dinner','Count carbs and calculate bolus','Check feet for cuts, sores, redness','Log all readings for the day','Set overnight CGM alarms (low: 70, high: 250)','Prepare hypo kit for bedside','Plan tomorrow\'s meals and supplies','Take any evening medications'],
+  weekly:['Review glucose trends and patterns','Check insulin supply — order if needed','Change CGM sensor (if due)','Clean and inspect pump/device sites','Schedule any needed appointments','Review last week\'s average BG & TIR'],
+  monthly:['Refill prescriptions before running out','Inspect all sharps/lancets and replace','Check expiry dates on insulin and supplies','Review A1C trend if recent test done','Update care team with any concerns','Review and update emergency contacts','Check FRIO wallet / travel kit supplies']
+};
+let checkState={};
+function buildChecklists(){
+  const sections=[{key:'morning',id:'morning-checks',prog:'morning-progress'},{key:'evening',id:'evening-checks',prog:'evening-progress'}];
+  sections.forEach(({key,id,prog})=>{
+    checkState[key]={};
+    const el=document.getElementById(id);
+    el.innerHTML=CHECKS[key].map((t,i)=>{
+      checkState[key][i]=false;
+      return `<div class="ls-row"><div class="ls-label">${t}</div><div class="ls-check" id="chk-${key}-${i}" onclick="toggleCheck('${key}',${i})">—</div></div>`;
+    }).join('');
+  });
+  ['weekly','monthly'].forEach(key=>{
+    checkState[key]={};
+    const el=document.getElementById(key+'-checks');
+    el.innerHTML=CHECKS[key].map((t,i)=>{
+      checkState[key][i]=false;
+      return `<div class="ls-row"><div class="ls-label">${t}</div><div class="ls-check" id="chk-${key}-${i}" onclick="toggleCheck('${key}',${i})">—</div></div>`;
+    }).join('');
+  });
+}
+function toggleCheck(key,i){
+  checkState[key][i]=!checkState[key][i];
+  const el=document.getElementById(`chk-${key}-${i}`);
+  el.textContent=checkState[key][i]?'✓':'—';
+  el.classList.toggle('done',checkState[key][i]);
+  if (key==='morning'||key==='evening'){
+    const done=Object.values(checkState[key]).filter(Boolean).length;
+    const total=CHECKS[key].length;
+    const pEl=document.getElementById(key+'-progress');
+    if(pEl) pEl.textContent=`${done}/${total} completed`;
+  }
+}
+
+// ═══════════════════════════════════════
+// APPOINTMENTS
+// ═══════════════════════════════════════
+let appts=[];
+function addAppt(){
+  const type=document.getElementById('apptType').value;
+  const date=document.getElementById('apptDate').value;
+  const notes=document.getElementById('apptNotes').value;
+  if(!date){alert('Select a date.');return;}
+  appts.push({type,date,notes}); appts.sort((a,b)=>a.date.localeCompare(b.date)); renderAppts();
+  document.getElementById('apptDate').value=''; document.getElementById('apptNotes').value='';
+}
+function removeAppt(i){appts.splice(i,1);renderAppts();}
+function renderAppts(){
+  const el=document.getElementById('apptList');
+  if(!appts.length){el.innerHTML='<div style="font-size:.8rem;color:var(--muted)">No appointments yet.</div>';return;}
+  el.innerHTML=`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Type</th><th>Date</th><th>Notes</th><th></th></tr></thead><tbody>${
+    appts.map((a,i)=>`<tr><td>${a.type}</td><td>${new Date(a.date+'T00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</td><td style="font-size:.75rem;color:var(--muted)">${a.notes||'—'}</td><td><button class="btn bg bsm" onclick="removeAppt(${i})">✕</button></td></tr>`).join('')
+  }</tbody></table></div>`;
+}
+
+// ═══════════════════════════════════════
+// NUTRITION CALCULATOR
+// ═══════════════════════════════════════
+function calcNutrition(){
+  const wt=parseFloat(document.getElementById('nutWt').value)||70;
+  const ht=parseFloat(document.getElementById('nutHt').value)||170;
+  const age=parseInt(document.getElementById('nutAge').value)||35;
+  const gender=document.getElementById('nutGender').value;
+  const act=parseFloat(document.getElementById('nutActivity').value)||1.55;
+  const bmi=wt/((ht/100)**2);
+  const bmr=gender==='m'?(10*wt+6.25*ht-5*age+5):(10*wt+6.25*ht-5*age-161);
+  const tdee=Math.round(bmr*act);
+  const cals=tdee;
+  const carbG=Math.round((cals*0.47)/4);
+  const protG=Math.round((cals*0.22)/4);
+  const fatG=Math.round((cals*0.31)/9);
+  document.getElementById('nutCalories').textContent=cals;
+  document.getElementById('nutBMI').textContent=bmi.toFixed(1);
+  document.getElementById('nutCarbs').textContent=carbG+'g';
+  document.getElementById('nutProtein').textContent=protG+'g';
+  document.getElementById('nutFat').textContent=fatG+'g';
+  let bmiNote='',bmiColor='var(--green)';
+  if(bmi<18.5){bmiNote='BMI indicates underweight. Adequate calorie intake is essential for stable glucose management and avoiding hypoglycemia.';bmiColor='var(--blue)';}
+  else if(bmi<25){bmiNote='BMI is in the healthy range. Maintain balanced nutrition and consistent activity levels for optimal glucose control.';}
+  else if(bmi<30){bmiNote='BMI indicates overweight. A modest calorie reduction of 300–500 kcal/day, combined with exercise, can improve insulin sensitivity.';}
+  else{bmiNote='BMI indicates obesity. Even 5–10% weight loss can significantly improve insulin sensitivity and reduce daily insulin requirements.';bmiColor='var(--coral)';}
+  document.getElementById('nutBMINote').innerHTML=`<span style="color:${bmiColor}">${bmiNote}</span>`;
+  document.getElementById('nutResult').style.display='block';
+}
+
+// ═══════════════════════════════════════
+// DDS-4 MENTAL HEALTH SCREENER
+// ═══════════════════════════════════════
+const DDS_ITEMS=[
+  'Feeling that diabetes is taking up too much of my mental and physical energy every day',
+  'Feeling angry, scared, and/or depressed when I think about living with diabetes',
+  'Feeling that my doctor does not know enough about diabetes and diabetes care',
+  'Not feeling motivated to keep up my diabetes self-management'
+];
+function buildDDS(){
+  const el=document.getElementById('ddsQuestions');
+  el.innerHTML=DDS_ITEMS.map((q,i)=>`<div class="burnout-q">
+    <p><strong>${i+1}.</strong> ${q}</p>
+    <div class="slider-wrap">
+      <span style="font-size:.72rem;color:var(--muted)">Not a problem</span>
+      <input type="range" id="dds${i}" min="1" max="6" value="1" oninput="document.getElementById('ddsv${i}').textContent=this.value">
+      <div class="slider-val" id="ddsv${i}">1</div>
+      <span style="font-size:.72rem;color:var(--muted)">Serious problem</span>
+    </div>
+  </div>`).join('');
+}
+function calcDDS(){
+  const scores=DDS_ITEMS.map((_,i)=>parseInt(document.getElementById('dds'+i).value));
+  const avg=(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1);
+  const res=document.getElementById('ddsResult');
+  res.style.display='block';
+  let level,note,col;
+  if(avg<2){level='Low Distress';col='var(--green)';note='Your diabetes distress appears to be low right now. Keep up your self-care routines and continue checking in with yourself regularly.';}
+  else if(avg<3){level='Moderate Distress';col='var(--amber)';note='You are experiencing some distress related to diabetes management. Consider discussing these feelings with your diabetes educator or a mental health professional. You are not alone in this.';}
+  else{level='High Distress — Support Recommended';col='var(--red)';note='Your score indicates significant diabetes distress. This is very common and very treatable. Please speak with your care team about a referral to a diabetes-specialised psychologist or counsellor. Peer support groups can also help tremendously.';}
+  res.style.borderColor=col;
+  res.innerHTML=`<div style="font-weight:700;color:${col};font-size:1rem;margin-bottom:.4rem">${level}</div><div style="font-size:.8rem;color:var(--muted);margin-bottom:.4rem">Average Score: ${avg}/6</div><div style="font-size:.8rem;line-height:1.7">${note}</div>`;
+}
+
+// ═══════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════
+const QUIZ=[
+  {q:'What is the ADA recommended Time-in-Range (TIR) target for most adults with T1D?',opts:['At least 50% (70–180 mg/dL)','At least 60% (70–180 mg/dL)','At least 70% (70–180 mg/dL)','At least 80% (70–180 mg/dL)'],ans:2,fb:'The ADA 2024 target is >70% Time in Range (70–180 mg/dL). TIR is measured daily by CGM and is a better real-time indicator than A1C alone.'},
+  {q:'What is the "Rule of 15" for treating mild hypoglycemia?',opts:['Eat 15 crackers, wait 15 seconds','Eat 15g fast carbs, wait 15 min, recheck','Inject 15 units, wait 15 min','Drink 15 oz water and call your doctor'],ans:1,fb:'The Rule of 15: eat 15g of fast-acting carbs, wait 15 minutes, recheck BG. Repeat if still below 70 mg/dL. Never skip the recheck — BG may still be low.'},
+  {q:'What blood ketone level requires immediate ER attention?',opts:['0.6–1.0 mmol/L','1.0–1.5 mmol/L','1.5–2.0 mmol/L','Above 3.0 mmol/L'],ans:3,fb:'Blood ketones >3.0 mmol/L (or large urine ketones) indicates likely DKA — a life-threatening emergency. Go to the ER immediately. Never try to treat DKA at home.'},
+  {q:'Which type of exercise is MOST likely to RAISE blood glucose initially due to adrenaline?',opts:['30-minute jog','Long-distance swimming','High-intensity interval training (HIIT) or sprinting','Slow yoga'],ans:2,fb:'HIIT and intense anaerobic exercise trigger adrenaline and cortisol release, which raise BG in the short term. However, late-onset hypoglycemia can occur hours later as muscles replenish glycogen.'},
+  {q:'What does "insulin-on-board" (IOB) mean?',opts:['The amount of insulin in your unopened vial','The active insulin still working in your body from previous doses','The total daily dose you prescribed','How much insulin your pancreas produces'],ans:1,fb:'IOB (Insulin on Board) is the estimated amount of active insulin remaining from previous bolus doses. Knowing your IOB prevents "stacking" — taking too much insulin when bolus doses overlap, which causes dangerous hypoglycemia.'},
+  {q:'Type 1 Diabetes is caused by:',opts:['Eating too much sugar','Being overweight or obese','The immune system attacking and destroying insulin-producing beta cells','Insulin resistance in muscle and liver cells'],ans:2,fb:'T1D is an autoimmune condition where the body\'s immune system mistakenly destroys the insulin-producing beta cells of the pancreas. It is not caused by diet or lifestyle — unlike Type 2 diabetes which involves insulin resistance.'},
+  {q:'What is the ideal pre-bolus timing for rapid-acting insulin before a high-carb meal?',opts:['At the first bite of food','5 minutes before eating','15–20 minutes before eating','1 hour before eating'],ans:2,fb:'Pre-bolusing 15–20 minutes before meals significantly reduces post-meal glucose spikes. This matches the onset of action of most rapid-acting insulins (Lispro, Aspart, Glulisine). Ultra-rapid insulins like Fiasp can be taken closer to the meal.'},
+  {q:'Which complication should be screened for with a urine albumin test?',opts:['Retinopathy (eye damage)','Nephropathy (kidney damage)','Neuropathy (nerve damage)','Cardiomyopathy (heart damage)'],ans:1,fb:'Microalbuminuria (small amounts of protein in urine) is the earliest detectable sign of diabetic nephropathy (kidney disease). The urine albumin-to-creatinine ratio (UACR) should be checked annually in all T1D patients.'},
+];
+let qIdx=0, score=0, answered=false;
+function buildQuiz(){ qIdx=0; score=0; answered=false; renderQuestion(); }
+function renderQuestion(){
+  answered=false;
+  const q=QUIZ[qIdx];
+  document.getElementById('quizScore').style.display='none';
+  document.getElementById('quizContainer').innerHTML=`
+    <div style="font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:.5rem">Question ${qIdx+1} of ${QUIZ.length}</div>
+    <div style="font-weight:600;font-size:.9rem;margin-bottom:.9rem;line-height:1.5">${q.q}</div>
+    ${q.opts.map((opt,i)=>`<div class="qopt" id="qo${i}" onclick="answerQ(${i})">${opt}</div>`).join('')}
+    <div class="qfb" id="qfb"></div>`;
+}
+function answerQ(i){
+  if(answered) return; answered=true;
+  const q=QUIZ[qIdx];
+  q.opts.forEach((_,j)=>{ const el=document.getElementById('qo'+j); el.classList.add(j===q.ans?'correct':'wrong'); });
+  const fb=document.getElementById('qfb');
+  fb.classList.add('show');
+  if(i===q.ans){score++;fb.style.background='var(--green-p)';fb.style.color='var(--green)';fb.innerHTML='✅ Correct! '+q.fb;}
+  else{fb.style.background='var(--coral-p)';fb.style.color='var(--coral)';fb.innerHTML='❌ Not quite. '+q.fb;}
+}
+function nextQuestion(){
+  if(!answered && qIdx>0){alert('Please answer the current question first.');return;}
+  if(qIdx<QUIZ.length-1){qIdx++;renderQuestion();}
+  else{
+    const sc=document.getElementById('quizScore');
+    sc.style.display='block';
+    const pct=Math.round(score/QUIZ.length*100);
+    sc.textContent=`Quiz complete! You scored ${score}/${QUIZ.length} (${pct}%). ${pct>=80?'Excellent knowledge!':pct>=60?'Good job — review the explanations for any you missed.':'Keep studying — every answer explanation teaches you something important about T1D.'}`;
+  }
+}
+function resetQuiz(){ buildQuiz(); }
+
+// ═══════════════════════════════════════
+// FAQ
+// ═══════════════════════════════════════
+const FAQS=[
+  {q:'What is the difference between Type 1 and Type 2 diabetes?',a:'Type 1 diabetes (T1D) is an autoimmune disease where the immune system destroys insulin-producing beta cells. People with T1D produce little or no insulin and require insulin therapy for life. Type 2 diabetes involves insulin resistance — the body still produces insulin but cannot use it effectively. T1D is not caused by diet or lifestyle and cannot be reversed; T2D often has modifiable lifestyle factors.'},
+  {q:'Can Type 1 diabetes be cured?',a:'There is currently no cure for T1D, but research is advancing rapidly. Teplizumab (Tzield) was approved in 2022 to delay T1D onset in at-risk individuals. Beta cell transplantation, encapsulation technology, and stem cell therapies are in clinical trials. For now, the best management is tight glucose control with insulin, CGM, and ideally a closed-loop system.'},
+  {q:'What is a closed-loop insulin delivery system?',a:'A closed-loop or "artificial pancreas" system combines a CGM with an insulin pump and an algorithm that automatically adjusts insulin delivery based on glucose readings. Systems like the Medtronic 780G, Tandem Control-IQ, and Omnipod 5 can significantly improve TIR and reduce hypoglycemia with minimal input. DIY systems like Loop and AndroidAPS are also widely used.'},
+  {q:'How often should I check my blood glucose?',a:'With a CGM, readings are available every 1–5 minutes automatically. Without a CGM: check before meals, 2 hrs after meals, before and after exercise, before bed, and any time you feel symptoms. Most T1D guidelines recommend at minimum 4–6 checks per day for those on MDI therapy.'},
+  {q:'What foods are best for stable blood glucose?',a:'Low-GI, high-fiber foods: non-starchy vegetables, legumes, whole grains, nuts, Greek yogurt. Pairing carbs with protein or fat slows absorption. Consistent meal timing helps stabilise glucose patterns. There is no single "diabetic diet" — low-carb, Mediterranean, and plate method all have evidence behind them. Work with a dietitian who understands T1D.'},
+  {q:'How does alcohol affect blood glucose in T1D?',a:'Alcohol inhibits the liver\'s ability to release stored glucose, causing hypoglycemia that can be delayed by 4–12 hours after drinking. Never drink on an empty stomach. Set overnight CGM alarms. Mixed drinks and beer contain significant carbs. Moderate alcohol (1–2 drinks) can be part of T1D life with proper precautions. Always inform companions about your T1D.'},
+  {q:'Is it safe to exercise with T1D?',a:'Absolutely — regular exercise is beneficial for cardiovascular health, insulin sensitivity, and mental wellbeing. The key is preparation: check BG before exercise, adjust insulin or eat carbs based on BG and exercise type, carry fast-acting carbs, check BG afterward and the next morning. Aerobic exercise lowers BG; anaerobic/HIIT may raise it initially. A continuous glucose monitor during exercise is ideal.'},
+  {q:'What should I do during a DKA emergency?',a:'DKA (Diabetic Ketoacidosis) is a life-threatening emergency. Signs: BG >250 mg/dL + moderate/large ketones + nausea/vomiting/abdominal pain + fruity breath. DO NOT try to treat DKA at home. Go to the emergency room immediately. Call 112 in India. DKA requires intravenous insulin, fluids, and electrolyte replacement in a hospital setting.'},
+];
+function buildFAQ(){
+  document.getElementById('faqList').innerHTML=FAQS.map((f,i)=>`
+    <div class="faq-item" id="faq${i}">
+      <div class="faq-q" onclick="toggleFAQ(${i})">${f.q}<span class="arr">▼</span></div>
+      <div class="faq-a">${f.a}</div>
+    </div>`).join('');
+}
+function toggleFAQ(i){ document.getElementById('faq'+i).classList.toggle('open'); }
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+buildFoodGrids();
+buildChecklists();
+buildDDS();
+buildQuiz();
+buildFAQ();
+</script>
+</body>
+</html>
